@@ -149,19 +149,41 @@ namespace QualityCaps.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                // Save Customer Info
+                ApplicationDbContext db = new ApplicationDbContext();
+                Customer customer = new Customer()
+                {
+                    CustomerID = Guid.NewGuid().ToString(),
+                    Address = model.Address,
+                    PhoneHome = model.PhoneHome,
+                    PhoneMobile = model.PhoneMobile,
+                    PhoneWork = model.PhoneWork,
+                    Email = model.Email,
+                    LastName = model.LastName,
+                    FirstMidName = model.FirstMidName,
+                };
+                db.Customers.Add(customer);
+                db.SaveChanges();
+
+
+                // Save Account Info
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email,CustomerID=customer.CustomerID };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+
+
 
                     return RedirectToAction("Index", "Home");
                 }

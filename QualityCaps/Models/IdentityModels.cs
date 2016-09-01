@@ -3,16 +3,25 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace QualityCaps.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        [Required]
+        [ForeignKey("Customer")]
+        public string  CustomerID{ get; set; }
+        public virtual Customer Customer { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
-            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
-            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+         
+
+        // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+        var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
             return userIdentity;
         }
@@ -29,5 +38,24 @@ namespace QualityCaps.Models
         {
             return new ApplicationDbContext();
         }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ApplicationUser>().ToTable("Accounts").Property(p => p.Id).HasColumnName("AccountID");
+
+        }
+
+        public System.Data.Entity.DbSet<QualityCaps.Models.Customer> Customers { get; set; }
+
+        public System.Data.Entity.DbSet<QualityCaps.Models.Category> Categories { get; set; }
+
+        public System.Data.Entity.DbSet<QualityCaps.Models.Color> Colors { get; set; }
+
+        public System.Data.Entity.DbSet<QualityCaps.Models.Product> Products { get; set; }
+
+        public System.Data.Entity.DbSet<QualityCaps.Models.Supplier> Suppliers { get; set; }
+
+        public System.Data.Entity.DbSet<QualityCaps.Models.ProductColor> ProductColors { get; set; }
     }
 }
