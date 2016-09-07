@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Manage";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+
+
+
+<div>
+
+    @Html.ActionLink("Category","Index", "Categories",new { area="Admin"}, htmlAttributes: new { id="category"});
+    @Html.ActionLink("Color","Index", "Colors", new { area = "Admin" },null);
+    @Html.ActionLink("Customer","Index", "Customers", new { area = "Admin" }, null);
+    @Html.ActionLink("OrderProduct","Index", "OrderProducts", new { area = "Admin" }, null);
+    @Html.ActionLink("Product","Index", "Products", new { area = "Admin" }, null);
+    @Html.ActionLink("Order","Index", "Orders", new { area = "Admin" }, null);
+    @Html.ActionLink("OrderStatus", "Index", "OrderStatus", new { area = "Admin" }, null);
+    @Html.ActionLink("ProductColor","Index", "ProductColors", new { area = "Admin" }, null);
+    @Html.ActionLink("Supplier","Index", "Suppliers", new { area = "Admin" }, null);
+
+</div>
+
+
+

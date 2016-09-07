@@ -1,0 +1,68 @@
+﻿@model IEnumerable<QualityCaps.Models.ProductColor>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+
+
+
+@*Filter*@
+
+
+    @using (Html.BeginForm("Index", "Store", FormMethod.Get))
+    {
+        <p>
+            Category: @Html.DropDownList("categoryID", "All")
+            Color: @Html.DropDownList("colorID", "All")
+        </p>
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Filter" />
+        </div>
+    }
+  
+
+
+
+
+
+    <div class="mdl-grid" id="caps_display_container">
+        @foreach (var item in Model)
+        {
+            <div class="mdl-cell card-square mdl-card mdl-shadow--2dp  mdl-cell--3-col ">
+                <div class="view overlay hm-white-slight z-depth-0 cap_display_img_small_div">
+ 
+                    <a href=@Url.Action( "Details", new { productID = item.ProductID, colorID = item.ColorID })>
+                        <img src=@Html.DisplayFor(modelItem => item.ImageUrl) alt=@Html.DisplayFor(modelItem => item.Product.ProductName) class="img-fluid cap_display_img_small">
+
+                        <div class="mask"></div>
+                        
+                    </a>
+                  
+                 </div>
+                <div class="mdl-card__supporting-text">
+                    <!--Title-->
+                   
+                    <div class="card-title">@Html.ActionLink(item.Product.ProductName, "Details", new { productID = item.ProductID, colorID = item.ColorID })</div>
+                    <!--Text-->
+                    <div class="card-text">@Html.DisplayFor(modelItem => item.Color.ColorName)</div>
+                    <div class="card-text">@Html.DisplayFor(modelItem => item.Product.UnitPrice)</div>
+                    
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+
+
+
+
+
+  

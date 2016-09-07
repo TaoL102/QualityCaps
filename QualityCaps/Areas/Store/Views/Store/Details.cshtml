@@ -1,0 +1,134 @@
+﻿@model QualityCaps.Models.ProductColor
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+@*Add to Cart Button JS*@
+<script type="text/javascript">
+    $(function () {            
+        'use strict';
+        // Document.ready -> link up remove event handler
+        $("#submit").click(function () {
+            // Get the id from the link
+            var url = "/ShoppingCart/AddToCart";
+            var productID=@Html.Raw(Json.Encode(Model.ProductID));
+            var colorID=$("#ddListColors").val();
+            if (productID != ''&&colorID!='') {
+                // Perform the ajax post
+                $.ajax({
+                    type: "POST", 
+                    url : url,
+                    data:  { productID: productID, colorID: colorID },
+                }).done(function(data)  {
+                    var totalQuantity=0;
+                    // Sum up
+                    data.forEach(function(element){totalQuantity+=element.Quantity})
+                    
+                    // Update Cart Icon quantity
+                    $("#cartTotalQuantity").text(totalQuantity);
+
+                    // Show snack bar message
+                    var snackbarContainer = document.querySelector('#snack_bar');
+                    var data = {message: "@Model.Product.ProductName "+ " added to cart."};
+                    snackbarContainer.MaterialSnackbar.showSnackbar(data);
+
+
+                }).fail(function()  {
+                    alert("Sorry. Unable to add item to cart due to server connection failure. ");
+                }); 
+
+
+
+            };
+        }); });
+</script>
+
+
+
+
+<h2>Details</h2>
+
+<div>
+    <h4>ProductColor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Color.ColorName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Color.ColorName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.SupplierID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.SupplierID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.QuantityInStock)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuantityInStock)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImageUrl)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new {  productID= Model.ProductID,colorID=Model.ColorID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+
+
+    @Html.HiddenFor(item => item.ProductID)
+    @Html.HiddenFor(item => item.Product.ProductName)
+    @Html.HiddenFor(item => item.Product.ProductName)
+
+
+    <div class="mdl-cell card-square mdl-card mdl-shadow--2dp  mdl-cell--3-col ">
+        <div class="view overlay hm-white-slight z-depth-0 cap_display_img_small_div">
+            <img src=@Html.DisplayFor(model => model.ImageUrl) alt=@Html.DisplayFor(model => model.Product.ProductName) class="img-fluid cap_display_img_small">
+            <a>
+                <div class="mask"></div>
+            </a>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <!--Title-->
+            <div class="card-title">@Html.DisplayFor(model => model.Product.ProductName)</div>
+            <!--Text-->
+            <div class="card-text">Color: @Html.DropDownList("colorID",(SelectList)ViewBag.colorID,  new { id = "ddListColors" })</div>
+            <div class="card-text">@Html.DisplayFor(model => model.Product.UnitPrice)</div>
+
+        </div>
+        <div class="mdl-card__actions mdl-card--border">           
+        <input type="button" id="submit"  class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" value="ADD TO CART" />
+
+        </div>
+    </div>
+
+@*Snack Bar*@
+<div id="snack_bar" class="mdl-js-snackbar mdl-snackbar">
+    <div class="mdl-snackbar__text"></div>
+    <button class="mdl-snackbar__action" type="button"></button>
+</div>
+
+
+
+

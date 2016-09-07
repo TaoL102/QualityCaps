@@ -1,0 +1,81 @@
+﻿@model QualityCaps.Models.ProductColor
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ProductColor</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Color.ColorName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Color.ColorName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.SupplierID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.SupplierID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.QuantityInStock)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuantityInStock)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImageUrl)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new {  productID= Model.ProductID,colorID=Model.ColorID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+@using (Html.BeginForm("Index", "ProductColors", FormMethod.Get))
+{
+    <div class="mdl-cell card-square mdl-card mdl-shadow--2dp  mdl-cell--3-col ">
+        <div class="view overlay hm-white-slight z-depth-0 cap_display_img_small_div">
+            <img src=@Html.DisplayFor(model => model.ImageUrl) alt=@Html.DisplayFor(model => model.Product.ProductName) class="img-fluid cap_display_img_small">
+            <a>
+                <div class="mask"></div>
+            </a>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <!--Title-->
+            <div class="card-title">@Html.DisplayFor(model => model.Product.ProductName)</div>
+            <!--Text-->
+            <div class="card-text">Color: @Html.DropDownList("colorID", "All")</div>
+            <div class="card-text">@Html.DisplayFor(model => model.Product.UnitPrice)</div>
+
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+               BUY
+            </a>
+        </div>
+    </div>
+}
+
+
+
+
+

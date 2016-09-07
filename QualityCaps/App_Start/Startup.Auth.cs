@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using QualityCaps.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace QualityCaps
 {
@@ -18,6 +19,9 @@ namespace QualityCaps
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
+            // Role manager
+            app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
+
 
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider
@@ -25,7 +29,7 @@ namespace QualityCaps
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login"),
+                LoginPath = new PathString("/Account/Account/Login"),
                 Provider = new CookieAuthenticationProvider
                 {
                     // Enables the application to validate the security stamp when the user logs in.
@@ -63,6 +67,43 @@ namespace QualityCaps
             //    ClientId = "",
             //    ClientSecret = ""
             //});
-        }
+
+
+
+            // Call CreateRolesandUsers method
+            createRolesandUsers();
+
     }
+
+
+        // Configure User Role
+        // In this method we will create default User roles and Admin user for login   
+        private void createRolesandUsers()
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
+
+            // In Startup iam creating first Admin Role and creating a default Admin User    
+            if (!roleManager.RoleExists("Admin"))
+            {
+
+                // first we create Admin rool   
+                var role = new IdentityRole();
+                role.Name = "Admin";
+                roleManager.Create(role);
+
+            }
+
+            // creating Creating Manager role    
+            if (!roleManager.RoleExists("Customer"))
+            {
+                var role = new IdentityRole();
+                role.Name = "Customer";
+                roleManager.Create(role);
+            }
+            }
+        }
 }

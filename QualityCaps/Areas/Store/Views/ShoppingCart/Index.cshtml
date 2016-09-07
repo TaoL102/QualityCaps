@@ -1,0 +1,151 @@
+﻿@using QualityCaps.Models;
+
+@{
+    ViewBag.Title = "Index";
+    var session=ViewBag.Session;
+    if (session == null) {
+        session = new List<ShoppingCartItemViewModel>();
+    }
+
+}
+
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+    $(function () {
+        // CLEAR CART button click event
+        $("#btn_ClearCart").click(function () {
+            // Shopping cart animation
+            $("#cartTableRows").fadeOut('slow');
+            $("#cartTable").remove("#cartTableRows");
+            $("#cartTableRowTitle").fadeOut('slow');
+            $("#cartTable").remove("#cartTableRowTitle");
+                // Append info:
+                $("#cartTableContainer").prepend("<p>Shopping cart is empty.</p>").fadeIn('slow')
+          
+            // Use ajax to Handel session data
+            var url = "/ShoppingCart/ClearCart";
+            
+                $.ajax({
+                    type: "POST",
+                    url: url,                    
+                }).done(function (data) {
+                    // Update the shopping cart icon
+                    $("#cartTotalQuantity").text(data);
+
+                    console.log("server connection succeeded. ");
+                }).fail(function () {
+                    console.log("Sorry. Unable to add item to cart due to server connection failure. ");
+                });
+
+            
+        });
+
+
+        // DEL button click event
+        $(".btnDel",this).click(function () {
+            // Get data content (product id and color id)
+            var dataContent = this.getAttribute('data-content');
+            // Convert to JSON format
+            dataContent = JSON.parse(dataContent)
+
+            var productID = dataContent.ProductID;
+            var colorID = dataContent.ColorID;
+
+            // Fade out current row
+            $("#" + productID + colorID).fadeOut('slow');
+            $("#cartTableRows").remove("#" + productID + colorID);
+
+            // If this is the lase row , fade out table as well
+            if ($("#cartTableRows tr:visible").length == 1) {
+                $("#cartTableRowTitle").fadeOut('slow');
+                $("#cartTableRows").remove("#cartTableRowTitle");
+                $("#cartTable").fadeOut('slow');
+
+                // Append info:
+                $("#cartTableContainer").prepend("<p>Shopping cart is empty.</p>").fadeIn('slow')
+            }
+
+            // Use ajax to Handel session data
+            var url = "/ShoppingCart/DeleteItem";
+            if (productID != '' && colorID != '') {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: { productID: productID, colorID: colorID },
+                }).done(function (data) {
+                    // Return data: the total quantity in cart
+
+                    $("#cartTotalQuantity").text(data);
+                    console.log(data)
+                }).fail(function () {
+                    alert("Sorry. Unable to add item to cart due to server connection failure. ");
+                });
+            }
+
+        })
+
+
+
+       });
+</script>
+
+
+
+
+
+
+@*Filter*@
+
+
+       
+
+
+            <table id="cartTable" class="mdl-data-table mdl-js-data-table full-width" >
+                <thead  id="cartTableRowTitle">
+                    <tr >
+                        <th >Item Code</th>
+                        <th class="mdl-data-table__cell--non-numeric">Item</th>
+                        <th >Category</th>
+                        <th >Quantity</th>
+                        <th >Unit price</th>
+                        <th >Total Price</th>
+                        <th >Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="cartTableRows">
+                    @foreach (var item in session)
+                    {
+
+
+                        <tr id="@item.ProductID@item.ColorID" >
+                            <td>@item.ProductID</td>
+                            <td class="mdl-data-table__cell--non-numeric">@item.ProductName  (@item.ColorName)</td>
+                            <td>@item.Category</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.UnitPrice</td>
+                            <td>@item.TotalPrice</td>
+                            <td><button value="DELETE" data-content='{"ProductID":"@item.ProductID","ColorID":"@item.ColorID"}' class="btnDel">DEL</button></td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+
+
+<a  class="btn btn-primary" id="btn_ClearCart">CLEAR CART</a>
+     
+
+
+
+    
+
+
+      
+
+
+
+
+
+
+
+  

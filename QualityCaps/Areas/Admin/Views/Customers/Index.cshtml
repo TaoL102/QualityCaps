@@ -1,0 +1,72 @@
+﻿@model IEnumerable<QualityCaps.Models.Customer>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneHome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneWork)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneMobile)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApplicationUser.IsAccDisabled)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneHome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneWork)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneMobile)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApplicationUser.IsAccDisabled)
+        </td>
+        <td>
+            @Html.ActionLink("Disable Account", "DisableCustomerAccount", new { id = item.CustomerID })
+
+
+            <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switchbtn-DisableAcc">
+                <input type="checkbox" id="switchbtn-DisableAcc" data-id="@item.CustomerID" class="mdl-switch__input" checked>
+                <span class="mdl-switch__label"></span>
+            </label>
+
+        </td>
+    </tr>
+}
+
+</table>

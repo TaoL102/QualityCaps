@@ -14,10 +14,12 @@ namespace QualityCaps
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
+                "Default", // Route name
+                "{controller}/{action}/{id}", // URL with parameters
+                new { area = "Home", controller = "Home", action = "Index", id = UrlParameter.Optional }, // Parameter defaults
+                null,
+                new[] { "QualityCaps.Controllers" }
+                ).DataTokens.Add("area", "Home"); ;
         }
     }
 }

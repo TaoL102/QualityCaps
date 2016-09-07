@@ -1,0 +1,175 @@
+﻿@model IEnumerable<QualityCaps.Models.ProductColor>
+
+@{
+    ViewBag.Title = "Index";
+}
+<li class="nav-item">
+    <a class="nav-link" data-toggle="modal" data-target="#cart-modal-ex"><i class="fa fa-shopping-cart"></i> <span class="hidden-sm-down">Cart</span></a>
+</li>
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Color.ColorName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Product.SupplierID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.QuantityInStock)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImageUrl)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Color.ColorName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.SupplierID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuantityInStock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageUrl)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { productID = item.ProductID, colorID = item.ColorID }) |
+                @Html.ActionLink("Details", "Details", new { productID = item.ProductID, colorID = item.ColorID }) |
+                @Html.ActionLink("Delete", "Delete", new { productID = item.ProductID, colorID = item.ColorID })
+            </td>
+        </tr>
+    }
+</table>
+
+
+
+@*Filter*@
+
+
+    @using (Html.BeginForm("Index", "ProductColors", FormMethod.Get))
+    {
+        <p>
+            Category: @Html.DropDownList("categoryID", "All")
+            Color: @Html.DropDownList("colorID", "All")
+        </p>
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Filter" />
+        </div>
+    }
+  
+
+
+
+
+
+    <div class="mdl-grid" id="caps_display_container">
+        @foreach (var item in Model)
+        {
+            <div class="mdl-cell card-square mdl-card mdl-shadow--2dp  mdl-cell--3-col ">
+                <div class="view overlay hm-white-slight z-depth-0 cap_display_img_small_div">
+                    <img src=@Html.DisplayFor(modelItem => item.ImageUrl) alt=@Html.DisplayFor(modelItem => item.Product.ProductName) class="img-fluid cap_display_img_small">
+                    <a>
+                        <div class="mask"></div>
+                    </a>
+                 </div>
+                <div class="mdl-card__supporting-text">
+                    <!--Title-->
+                    <div class="card-title">@Html.DisplayFor(modelItem => item.Product.ProductName)</div>
+                    <!--Text-->
+                    <div class="card-text">@Html.DisplayFor(modelItem => item.Color.ColorName)</div>
+                    <div class="card-text">@Html.DisplayFor(modelItem => item.Product.UnitPrice)</div>
+                    
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade cart-modal" id="cart-modal-ex" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Your cart</h4>
+                </div>
+                <!--Body-->
+                <div class="modal-body">
+
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Product name</th>
+                                <th>Price</th>
+                                <th>Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Product 1</td>
+                                <td>100$</td>
+                                <td><a><i class="fa fa-remove"></i></a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Product 2</td>
+                                <td>100$</td>
+                                <td><a><i class="fa fa-remove"></i></a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Product 3</td>
+                                <td>100$</td>
+                                <td><a><i class="fa fa-remove"></i></a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
+                                <td>Product 4</td>
+                                <td>100$</td>
+                                <td><a><i class="fa fa-remove"></i></a></td>
+                            </tr>
+                            <tr class="total">
+                                <th scope="row">5</th>
+                                <td>Total</td>
+                                <td>400$</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <button class="btn btn-primary">Checkout</button>
+
+                </div>
+                <!--Footer-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+
+
+  

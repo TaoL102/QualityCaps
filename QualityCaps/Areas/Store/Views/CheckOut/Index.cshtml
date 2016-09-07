@@ -1,0 +1,117 @@
+﻿@model QualityCaps.Models.Order
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var session = ViewBag.Session;
+    if (session == null)
+    {
+        session = new List<QualityCaps.Models.ShoppingCartItemViewModel>();
+    }
+}
+
+
+
+<h2>Details</h2>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <div class="col-md-4">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Customer.FirstMidName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Customer.FirstMidName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Customer.LastName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Customer.LastName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Customer.PhoneHome)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Customer.PhoneHome)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Customer.PhoneWork)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Customer.PhoneWork)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Customer.PhoneMobile)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Customer.PhoneMobile)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Customer.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Customer.Email)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Customer.Address)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Customer.Address)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.SubTotal)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.SubTotal)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Gst)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Gst)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.GrandTotal)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.GrandTotal)
+            </dd>
+
+        </dl>
+    </div>
+
+    <div class="col-md-8">
+
+        @Html.Partial("~/Areas/Store/Views/ShoppingCart/Index.cshtml")
+    </div>
+    <div>
+        <button id="btn-Checkout">@Html.ActionLink("CHECK OUT","Confirm", "CheckOut", null,null)</button>
+        
+    </div>
+
+</div>
+<p>
+    
+</p>

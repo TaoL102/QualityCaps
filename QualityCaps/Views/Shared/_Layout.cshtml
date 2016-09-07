@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using QualityCaps.Models;
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,19 +8,22 @@
     <title>@ViewBag.Title - Quality Caps</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script type="text/javascript">
-        var appInsights=window.appInsights||function(config){
-            function r(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s=u.createElement(o),i,f;for(s.src=config.url||"//az416426.vo.msecnd.net/scripts/a/ai.0.js",u.getElementsByTagName(o)[0].parentNode.appendChild(s),t.cookie=u.cookie,t.queue=[],i=["Event","Exception","Metric","PageView","Trace","Ajax"];i.length;)r("track"+i.pop());return r("setAuthenticatedUserContext"),r("clearAuthenticatedUserContext"),config.disableExceptionTracking||(i="onerror",r("_"+i),f=e[i],e[i]=function(config,r,u,e,o){var s=f&&f(config,r,u,e,o);return s!==!0&&t["_"+i](config,r,u,e,o),s}),t
+        var appInsights = window.appInsights || function (config) {
+            function r(config) { t[config] = function () { var i = arguments; t.queue.push(function () { t[config].apply(t, i) }) } } var t = { config: config }, u = document, e = window, o = "script", s = u.createElement(o), i, f; for (s.src = config.url || "//az416426.vo.msecnd.net/scripts/a/ai.0.js", u.getElementsByTagName(o)[0].parentNode.appendChild(s), t.cookie = u.cookie, t.queue = [], i = ["Event", "Exception", "Metric", "PageView", "Trace", "Ajax"]; i.length;) r("track" + i.pop()); return r("setAuthenticatedUserContext"), r("clearAuthenticatedUserContext"), config.disableExceptionTracking || (i = "onerror", r("_" + i), f = e[i], e[i] = function (config, r, u, e, o) { var s = f && f(config, r, u, e, o); return s !== !0 && t["_" + i](config, r, u, e, o), s }), t
         }({
-            instrumentationKey:"aa43eacc-9f98-4df4-acec-0c78d129d8dc"
+            instrumentationKey: "aa43eacc-9f98-4df4-acec-0c78d129d8dc"
         });
-        
-        window.appInsights=appInsights;
+
+        window.appInsights = appInsights;
         appInsights.trackPageView();
     </script>
 </head>
-<body>
+<body >
+
+
+    @*NEW NAV*@
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -27,28 +32,172 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Quality Caps", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Quality Caps", "Index", "Home", new { area = "Home" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
+                    <li>@Html.ActionLink("Store", "Index", "Store", new { area = "Store" }, null)</li>
+                    <li>@Html.ActionLink("About", "About", "Home", new { area = "Home" }, null)</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "Home" }, null)</li>
+               <li>@Html.Partial("_ShoppingCartPartial")</li>
+                    <li>@Html.Partial("_LoginPartial")</li>
+                    <li>@Html.ActionLink("Admin", "Index", "Admin",new { area="Admin"},null)</li>
+                 </ul>
+
+
+
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+
+
+
+
+    @*Main body section*@
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        
+    </section>
+
+    @*Footer section*@
+    <section>
+      
+            <div class="row">
+                <div class="col-lg-12">
+                    <footer class="mdl-mega-footer">
+                        <div class="mdl-mega-footer__middle-section">
+
+                            <div class="mdl-mega-footer__drop-down-section">
+                                <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
+                                <h1 class="mdl-mega-footer__heading">Features</h1>
+                                <ul class="mdl-mega-footer__link-list">
+                                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                                    <li><a href="#">Terms</a></li>
+                                    <li><a href="#">Partners</a></li>
+                                    <li><a href="#">Updates</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="mdl-mega-footer__drop-down-section">
+                                <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
+                                <h1 class="mdl-mega-footer__heading">Details</h1>
+                                <ul class="mdl-mega-footer__link-list">
+                                    <li><a href="#">Specs</a></li>
+                                    <li><a href="#">Tools</a></li>
+                                    <li><a href="#">Resources</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="mdl-mega-footer__drop-down-section">
+                                <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
+                                <h1 class="mdl-mega-footer__heading">Technology</h1>
+                                <ul class="mdl-mega-footer__link-list">
+                                    <li><a href="#">How it works</a></li>
+                                    <li><a href="#">Patterns</a></li>
+                                    <li><a href="#">Usage</a></li>
+                                    <li><a href="#">Products</a></li>
+                                    <li><a href="#">Contracts</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="mdl-mega-footer__drop-down-section">
+                                <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked>
+                                <h1 class="mdl-mega-footer__heading">FAQ</h1>
+                                <ul class="mdl-mega-footer__link-list">
+                                    <li><a href="#">Questions</a></li>
+                                    <li><a href="#">Answers</a></li>
+                                    <li><a href="#">Contact us</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                        <div class="mdl-mega-footer__bottom-section">
+                            <div class="mdl-logo">Title</div>
+                            <ul class="mdl-mega-footer__link-list">
+                                <li><a href="#">Help</a></li>
+                                <li><a href="#">Privacy & Terms</a></li>
+                            </ul>
+                        </div>
+
+                    </footer>
+                </div>
+            </div>
+       
+
+      
+
+    </section>
+
+
+
+
+
+
+
+
+    <!-- Shopping cart modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Cart</h4>
+                </div>
+                <!--Body-->
+                <div class="modal-body " id="cartTableContainer">
+                    @Html.Partial("~/Areas/Store/Views/ShoppingCart/Index.cshtml")
+               
+                </div>
+                     <!--Footer-->
+<div class="modal-footer">
+
+    
+    @Html.ActionLink("CHECK OUT", "Index", "CheckOut",new { area="Store"},null)
+</div>
+                <!--/.Content-->
+            </div>
+        </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+            @Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/bootstrap")
+            @Scripts.Render("~/bundles/materialdesign")
+            @RenderSection("scripts", required: false)
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
