@@ -10,6 +10,7 @@ namespace QualityCaps.Models
 
         public string ProductID { get; set; }
         public string ColorID { get; set; }
+        public string ImageUrl { get; set; }
         public string ProductName { get; set; }
         public string ColorName { get; set; }
         public string Category { get; set; }

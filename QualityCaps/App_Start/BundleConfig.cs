@@ -23,16 +23,22 @@ namespace QualityCaps
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/materialdesign").Include(
-                      "~/Scripts/tether.js",
-                      "~/Scripts/mdb.js",
-                      "~/Scripts/material.js",
+            bundles.Add(new ScriptBundle("~/bundles/customizedJS").Include(
+                      "~/Scripts/jquery.dropdown.js",
+                      "~/Scripts/jquery.tagsinput.js",                     
+                       "~/Scripts/material.min.js",
+                     
+                      "~/Scripts/nouislider.min.js",
+                      "~/Scripts/material-kit.js","~/Scripts/creative.js",
                       "~/Scripts/site.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/bundles/css").Include(
                       "~/Content/bootstrap.css").Include(
-                     "~/Content/mdb.css", new CssRewriteUrlTransform()).Include(
-                     "~/Content/material.min.css", new CssRewriteUrlTransform()).Include(
+               "~/Content/font-awesome.css", new CssRewriteUrlTransform()));
+
+            bundles.Add(new StyleBundle("~/bundles/customizedCSS").Include(
+                 "~/Content/material-kit.css", new CssRewriteUrlTransform()).Include(
+                "~/Content/creative.css",
                       "~/Content/site.css"));
         }
     }

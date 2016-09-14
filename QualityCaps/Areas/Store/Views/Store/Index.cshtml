@@ -1,68 +1,243 @@
-﻿@model IEnumerable<QualityCaps.Models.ProductColor>
+﻿@using QualityCaps.Models
+@model IEnumerable<QualityCaps.Models.ProductColor>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<section>
 
 
+    @*Filter*@
 
 
+    <div >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
 
-@*Filter*@
-
-
-    @using (Html.BeginForm("Index", "Store", FormMethod.Get))
-    {
-        <p>
-            Category: @Html.DropDownList("categoryID", "All")
-            Color: @Html.DropDownList("colorID", "All")
-        </p>
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Filter" />
-        </div>
-    }
-  
+                    @using (Html.BeginForm("Index", "Store", FormMethod.Get))
+                    {
 
 
+                    <div class="card card-refine card-plain">
+                        <div class="content">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h6 class="panel-title">
+                                            <a data-toggle="collapse" href="#panel_price" aria-expanded="true" class="">
+                                                Price Range
+                                                <i class="fa fa-caret-up pull-right"></i>
+                                            </a>
+                                        </h6>
+                                    </div>
+                                    <div id="panel_price" class="panel-collapse collapse in" aria-expanded="true">
+                                        <div class="panel-body">
+                                            <span class="price price-left">€ 100</span>
+                                            <span class="price price-right">€ 850</span>
+                                            <div class="clearfix"></div>
+                                            <div id="refine-price-range" class="slider slider-info ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                                <div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 10.01%; width: 75.0751%;"></div><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 10.01%;"></span><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 85.0851%;"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h6 class="panel-title">
+                                            <a data-toggle="collapse" href="#panel_category" >
+                                                Category
+                                                <i class="fa fa-caret-up pull-right"></i>
+                                            </a>
+                                        </h6>
+                                    </div>
+                                    <div id="panel_category" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            @foreach (Category c in ViewBag.categoryList)
+                                            {
+                                                
+                                            @*Single check box start*@
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="@c.CategoryID" name="chkBoxesCategoryIDs">
+                                                    @c.CategoryName
+                                                </label>
+                                            </div>
+                                            @*Single check box end*@
+
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
 
 
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h6 class="panel-title">
+                                            <a data-toggle="collapse" href="#panel_supplier">
+                                                Brand
+                                                <i class="fa fa-caret-up pull-right"></i>
+                                            </a>
+                                        </h6>
+                                    </div>
+                                    <div id="panel_supplier" class="panel-collapse collapse in">
+                                        <div class="panel-body panel-scroll">
+                                            
+                                            @foreach (Supplier s in ViewBag.supplierList) {
 
-    <div class="mdl-grid" id="caps_display_container">
-        @foreach (var item in Model)
-        {
-            <div class="mdl-cell card-square mdl-card mdl-shadow--2dp  mdl-cell--3-col ">
-                <div class="view overlay hm-white-slight z-depth-0 cap_display_img_small_div">
- 
-                    <a href=@Url.Action( "Details", new { productID = item.ProductID, colorID = item.ColorID })>
-                        <img src=@Html.DisplayFor(modelItem => item.ImageUrl) alt=@Html.DisplayFor(modelItem => item.Product.ProductName) class="img-fluid cap_display_img_small">
+                                            @*Single check box start*@
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="@s.SupplierID" name="chkBoxesSupplierIDs">
+                                                    @s.Name
+                                                </label>
+                                            </div>
+                                            @*Single check box end*@
 
-                        <div class="mask"></div>
-                        
-                    </a>
-                  
-                 </div>
-                <div class="mdl-card__supporting-text">
-                    <!--Title-->
-                   
-                    <div class="card-title">@Html.ActionLink(item.Product.ProductName, "Details", new { productID = item.ProductID, colorID = item.ColorID })</div>
-                    <!--Text-->
-                    <div class="card-text">@Html.DisplayFor(modelItem => item.Color.ColorName)</div>
-                    <div class="card-text">@Html.DisplayFor(modelItem => item.Product.UnitPrice)</div>
-                    
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div><!-- end panel -->
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h6 class="panel-title">
+                                            <a data-toggle="collapse" href="#panel_color" >
+                                                Color
+                                                <i class="fa fa-caret-up pull-right"></i>
+                                            </a>
+                                        </h6>
+                                    </div>
+                                    <div id="panel_color" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            
+                                            @foreach(Color c in ViewBag.colorList) { 
+
+                                            @*Single check box start*@
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="@c.ColorID" name="chkBoxesColorIDs">
+                                                    @c.ColorName
+                                                </label>
+                                            </div>
+                                            @*Single check box end*@
+
+                                            }
+                                        </div>
+                                    </div>
+                                </div> <!-- end panel -->
+
+                            </div>
+                        </div>
+                    </div> <!-- end card -->
+
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" class="btn btn-info" value="Filter" />
+                        </div>
+                    }
                 </div>
-                <div class="mdl-card__actions mdl-card--border">
-                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                        Get Started
-                    </a>
+
+
+                @*PRODUCT DISPLAY START*@
+                <div class="col-md-9" id="portfolio">
+                    <div class="row">
+
+
+
+                        @foreach (var item in Model)
+            {
+
+
+
+                            <div class="col-xs-4 col-sm-2 col-md-2 portfolio-item">
+                                <a href="@Url.Action("Details", new {productID = item.ProductID, colorID = item.ColorID})" class="portfolio-link" data-toggle="modal">
+                                    <div class="portfolio-hover">
+                                        <div class="portfolio-hover-content">
+                                            <i class="material-icons">info_outline</i>
+                                            <p class="text-center">@Html.DisplayFor(modelItem => item.Product.ProductName)</p>
+                                        </div>
+                                    </div>
+
+                                    <img class="img img-responsive" src="~/Images/@Html.DisplayFor(modelItem => item.ImageUrl)" />
+
+                                </a>
+
+                                <div class="text-center">
+                                    @Html.DisplayFor(modelItem => item.Product.UnitPrice)
+
+                                    <button data-content='{"ProductID":"@item.ProductID","ColorID":"@item.ColorID"}' type="button" rel="tooltip" title="Add to cart" class="btn btn-just-icon btn-simple btn-rose pull-center btn_AddToCart">
+                                        <i class="material-icons">add_shopping_cart</i>
+                                    </button>
+                                </div>
+                            </div>
+
+                        }
+
+                    </div>
                 </div>
             </div>
-        }
+
+            @*Product display end*@
+
+
+        </div>
     </div>
 
 
 
 
 
-  
+
+
+
+
+
+    <script>
+        $(function () {
+
+            // ADD TO CART button click event handler
+            $(".btn_AddToCart", this)
+                .click(function () {
+                    console.log("ADD TO CART BUTTON CLICKED");
+
+                    // Get data content (product id and color id)
+                    var dataContent = this.getAttribute('data-content');
+                    // Convert to JSON format
+                    dataContent = JSON.parse(dataContent);
+
+                    var productID = dataContent.ProductID;
+                    var colorID = dataContent.ColorID;
+
+                    // Action URL
+                    var url = "@Url.Action("AddToCart", "ShoppingCart", new {area = "Store"})";
+
+                    if (productID != '' && colorID != '') {
+                        // Perform the ajax post
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: { productID: productID, colorID: colorID },
+                        })
+                            .done(function (data) {
+                                var totalQuantity = 0;
+                                // Sum up
+                                data.forEach(function (element) { totalQuantity += element.Quantity })
+
+                                // Update Cart Icon quantity
+                                $("#cartTotalQuantity").text(totalQuantity);
+
+
+                            })
+                            .fail(function () {
+                                alert("Sorry. Unable to add item to cart due to server connection failure. ");
+                            });
+
+
+                    };
+                });
+        });
+    </script>
+
+</section>

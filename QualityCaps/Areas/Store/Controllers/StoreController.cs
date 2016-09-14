@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using QualityCaps.Models;
 
 namespace QualityCaps.Controllers
@@ -26,21 +27,27 @@ namespace QualityCaps.Controllers
         //}
 
         // GET: Search for Products based on category & color
-        public ActionResult Index(string search, string categoryID, string colorID)
+        public ActionResult Index(string search, string[] chkBoxesCategoryIDs, string[] chkBoxesColorIDs,string[] chkBoxesSupplierIDs)
         {
             var productColors = db.ProductColors.Include(p => p.Color).Include(p => p.Product);
+            var supplers = db.Suppliers;
 
             // Category List
             var categoryList = new List<Category>();
             var categoryQry = from p in productColors orderby p.Product.CategoryID select p.Product.Category;
             categoryList.AddRange(categoryQry.Distinct());
-            ViewBag.categoryID = new SelectList(categoryList, "CategoryID", "CategoryName");
+            ViewBag.categoryList = categoryList;
 
             // Color List
             var colorList = new List<Color>();
             var colorQry = from p in productColors orderby p.ColorID select p.Color;
             colorList.AddRange(colorQry.Distinct());
-            ViewBag.colorID = new SelectList(colorList, "ColorID", "ColorName");
+            ViewBag.colorList = colorList;
+
+            // Supllier List
+            var supllierList = new List<Supplier>();
+            supllierList.AddRange(supplers.Distinct());
+            ViewBag.supplierList = supllierList;
 
 
             // Search 
@@ -48,15 +55,20 @@ namespace QualityCaps.Controllers
             {
                 productColors = productColors.Where(s => s.Product.ProductName.Contains(search));
             }
-            if (!String.IsNullOrEmpty(categoryID))
+            if (chkBoxesColorIDs!=null)
             {
-                productColors = productColors.Where(p => p.Product.CategoryID.Equals(categoryID));
+                productColors = productColors.Where(s => chkBoxesColorIDs.Contains(s.ColorID));
+            }
+            if (chkBoxesCategoryIDs != null)
+            {
+                productColors = productColors.Where(s => chkBoxesCategoryIDs.Contains(s.Product.CategoryID));
+            }
+            if (chkBoxesSupplierIDs != null)
+            {
+                productColors = productColors.Where(s => chkBoxesSupplierIDs.Contains(s.Product.SupplierID));
             }
 
-            if (!String.IsNullOrEmpty(colorID))
-            {
-                productColors = productColors.Where(p => p.ColorID.Equals(colorID));
-            }
+
             return View(productColors.ToList());
         }
 
@@ -80,9 +92,41 @@ namespace QualityCaps.Controllers
             var colorList = new List<Color>();
             var colorQry = from p in productColors where p.ProductID.Equals(productID) orderby p.ColorID select p.Color;
             colorList.AddRange(colorQry.Distinct());
-            ViewBag.colorID = new SelectList(colorList, "ColorID", "ColorName");
+            ViewBag.colorID = colorList;
 
             return View(productColor);
+        }
+
+        /// <summary>
+        /// Get Product Picture
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <param name="colorID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetProductPic(string productID, string colorID)
+        {
+            if (productID == null || colorID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ProductColor productColor = db.ProductColors.Find(productID, colorID);
+            if (productColor == null)
+            {
+                return HttpNotFound();
+            }
+
+            string imageUrl=null;
+
+            // Get the picURL
+            var item = db.ProductColors.FirstOrDefault(p => p.ProductID.Equals(productID)&&p.ColorID.Equals(colorID));
+            if (item != null)
+            {
+                imageUrl = item.ImageUrl;
+
+            }
+
+            return Json(imageUrl);
         }
 
         // GET: ProductColors/Create

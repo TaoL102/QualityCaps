@@ -11,13 +11,12 @@
 }
 
 
-
-<h2>Details</h2>
-
 <div>
     <h4>Order</h4>
     <hr />
-    <div class="col-md-4">
+    <h5>Customer Infomation</h5>
+
+    <div class="col-md-12">
         <dl class="dl-horizontal">
             <dt>
                 @Html.DisplayNameFor(model => model.Customer.FirstMidName)
@@ -101,11 +100,13 @@
 
         </dl>
     </div>
-
-    <div class="col-md-8">
+    <hr />
+    <h5>Shopping Cart</h5>
+    <div class="col-md-12">
 
         @Html.Partial("~/Areas/Store/Views/ShoppingCart/Index.cshtml")
     </div>
+
     <div>
         <button id="btn-Checkout">@Html.ActionLink("CHECK OUT","Confirm", "CheckOut", null,null)</button>
         

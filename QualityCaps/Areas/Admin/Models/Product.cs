@@ -31,7 +31,7 @@ namespace QualityCaps.Models
         public decimal UnitPrice { get; set; }
 
 
-        public string Discription { get; set; }
+        public string Description { get; set; }
     
         public virtual Category Category { get; set; }
 

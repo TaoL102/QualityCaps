@@ -1,4 +1,5 @@
-﻿@model QualityCaps.Models.ProductColor
+﻿@using QualityCaps.Models
+@model QualityCaps.Models.ProductColor
 
 @{
     ViewBag.Title = "Details";
@@ -6,27 +7,62 @@
 
 @Scripts.Render("~/bundles/jquery")
 
-@*Add to Cart Button JS*@
+
 <script type="text/javascript">
-    $(function () {            
+    $(function () {
         'use strict';
-        // Document.ready -> link up remove event handler
-        $("#submit").click(function () {
+        // COLOR RADIO buttons click event handler
+        $("input[type=radio][name=colorRadios]")
+            .change(function() {
+                console.log("radio clicked.");
+                // Get radio value(Color ID)
+                var url =" @Url.Action("GetProductPic","Store",new {area="Store"})";
+                var productID=@Html.Raw(Json.Encode(Model.ProductID));
+                var colorID = $("input[type=radio][name=colorRadios]:checked").val();
+
+                // Perform the ajax post
+                $.ajax({
+                    type: "POST",
+                    url : url,
+                    data:  { productID: productID, colorID: colorID },
+                }).done(function(data) {
+                    var url = @Url.Content("~/Images/") + "/"+data;
+                    $("#productPic").attr("src", url);
+
+                }).fail(function()  {
+                    alert("Sorry. Unable to get picture due to server connection failure. ");
+                });
+
+            });
+
+
+
+        // ADD TO CART button click event handler
+        $("#btn_AddToCart").click(function () {
             // Get the id from the link
-            var url = "/ShoppingCart/AddToCart";
+            var url = "@Url.Action("AddToCart","ShoppingCart",new {area="Store"})";
             var productID=@Html.Raw(Json.Encode(Model.ProductID));
-            var colorID=$("#ddListColors").val();
+                var colorID;
+            // Check which color has been chosen
+            if (!$("input[name='colorRadios']:checked").val()) {
+                alert('Nothing is checked!');
+                return;
+            }
+            else {
+                colorID = $("input[name='colorRadios']:checked").val();
+            }
+
             if (productID != ''&&colorID!='') {
                 // Perform the ajax post
                 $.ajax({
-                    type: "POST", 
+                    type: "POST",
                     url : url,
                     data:  { productID: productID, colorID: colorID },
                 }).done(function(data)  {
                     var totalQuantity=0;
                     // Sum up
                     data.forEach(function(element){totalQuantity+=element.Quantity})
-                    
+
                     // Update Cart Icon quantity
                     $("#cartTotalQuantity").text(totalQuantity);
 
@@ -38,7 +74,7 @@
 
                 }).fail(function()  {
                     alert("Sorry. Unable to add item to cart due to server connection failure. ");
-                }); 
+                });
 
 
 
@@ -47,87 +83,144 @@
 </script>
 
 
+<section>
+    <div >
+        <div class="container">
+            <div class="main main-raised main-product">
+                <div class="row ">
+                    <div class="col-md-6 col-sm-6">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="product-page1">
+                                <img id="productPic" class="img-responsive" src="~/Images/@Html.DisplayFor(modelItem => modelItem.ImageUrl)" alt="...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <h2 class="title"> @Html.DisplayFor(modelItem => modelItem.Product.ProductName) </h2>
+                        <h3 class="main-price">@Html.DisplayFor(modelItem => modelItem.Product.UnitPrice)</h3>
+                        <div id="acordeon">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-border panel-default">
+                                    <div class="panel-heading" role="tab" id="headingOne">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            <h4 class="panel-title">
+                                                Description
+                                                <i class="material-icons">keyboard_arrow_down</i>
+                                            </h4>
+                                        </a>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <p>@Html.DisplayFor(modelItem => modelItem.Product.Description)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="panel panel-border panel-default">
+                                        <div class="panel-heading" role="tab" id="headingOne">
+                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-controls="collapseOne">
+                                                <h4 class="panel-title">
+                                                    Designer Information
+                                                    <i class="material-icons">keyboard_arrow_down</i>
+                                                </h4>
+                                            </a>
+                                        </div>
+                                        <div id="collapseTwo" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                An infusion of West Coast cool and New York attitude, Rebecca Minkoff is synonymous with It girl style. Minkoff burst on the fashion scene with her best-selling 'Morning After Bag' and later expanded her offering with the Rebecca Minkoff Collection - a range of luxe city staples with a "downtown romantic" theme.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-border panel-default">
+                                        <div class="panel-heading" role="tab" id="headingOne">
+                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-controls="collapseOne">
+                                                <h4 class="panel-title">
+                                                    Details and Care
+                                                    <i class="material-icons">keyboard_arrow_down</i>
+                                                </h4>
+                                            </a>
+                                        </div>
+                                        <div id="collapseThree" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <ul>
+                                                    <li>Storm and midnight-blue stretch cotton-blend</li>
+                                                    <li>Notch lapels, functioning buttoned cuffs, two front flap pockets, single vent, internal pocket</li>
+                                                    <li>Two button fastening</li>
+                                                    <li>84% cotton, 14% nylon, 2% elastane</li>
+                                                    <li>Dry clean</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>*@
 
+                            </div>
+                        </div><!--  end acordeon -->
 
-<h2>Details</h2>
+                        <div class="row pick-size">
+                            <div class="col-md-6 col-sm-6">
+                                <h4 class="panel-title">
+                                    Select color
+                              
+                                </h4>
 
-<div>
-    <h4>ProductColor</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Color.ColorName)
-        </dt>
+                                @foreach (Color color in ViewBag.colorID)
+                                {
+                                    <style>
+                                        #@(String.Format("{0}{1}", "colorRadio", color.ColorID)) {
+                                            color: @color.RGBCode
+                                        }
+                                        #@(String.Format("{0}{1}", "colorRadio", color.ColorID)) .circle {
+                                            border: 1px solid @color.RGBCode;
+                                        }
+                                        #@(String.Format("{0}{1}", "colorRadio", color.ColorID)) input[type=radio].check {
+                                            background-color: @color.RGBCode;
+                                        }
+                                        #@(String.Format("{0}{1}", "colorRadio", color.ColorID)) input[type=radio]:checked ~ .check {
+                                            background-color: @color.RGBCode;
+                                        }
+                                        #@(String.Format("{0}{1}", "colorRadio", color.ColorID)).circle {
+                                            border-color: @color.RGBCode;
+                                        }
+                                    </style>
+                                    <div class="radio">
+                                        <label id="@(String.Format("{0}{1}", "colorRadio", color.ColorID))">
+                                            <input type="radio" name="colorRadios" value="@color.ColorID">
+                                            @color.ColorName
+                                        </label>
+                                    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Color.ColorName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Product.SupplierID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Product.SupplierID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.QuantityInStock)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.QuantityInStock)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ImageUrl)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new {  productID= Model.ProductID,colorID=Model.ColorID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
-
-
-
-
-    @Html.HiddenFor(item => item.ProductID)
-    @Html.HiddenFor(item => item.Product.ProductName)
-    @Html.HiddenFor(item => item.Product.ProductName)
-
-
-    <div class="mdl-cell card-square mdl-card mdl-shadow--2dp  mdl-cell--3-col ">
-        <div class="view overlay hm-white-slight z-depth-0 cap_display_img_small_div">
-            <img src=@Html.DisplayFor(model => model.ImageUrl) alt=@Html.DisplayFor(model => model.Product.ProductName) class="img-fluid cap_display_img_small">
-            <a>
-                <div class="mask"></div>
-            </a>
-        </div>
-        <div class="mdl-card__supporting-text">
-            <!--Title-->
-            <div class="card-title">@Html.DisplayFor(model => model.Product.ProductName)</div>
-            <!--Text-->
-            <div class="card-text">Color: @Html.DropDownList("colorID",(SelectList)ViewBag.colorID,  new { id = "ddListColors" })</div>
-            <div class="card-text">@Html.DisplayFor(model => model.Product.UnitPrice)</div>
-
-        </div>
-        <div class="mdl-card__actions mdl-card--border">           
-        <input type="button" id="submit"  class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" value="ADD TO CART" />
+                                }
+                            </div>
+                            @*<div class="col-md-6 col-sm-6">
+                                    <label>Select size</label>
+                                    <select class="select form-control">
+                                        <option value="1">Small </option>
+                                        <option value="2">Medium</option>
+                                        <option value="3">Large</option>
+                                    </select>
+                                </div>*@
+                        </div>
+                        <div class="row text-right">
+                            <button class="btn btn-rose btn-round" id="btn_AddToCart">Add to Cart &nbsp;<i class="material-icons">shopping_cart</i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
 
-@*Snack Bar*@
-<div id="snack_bar" class="mdl-js-snackbar mdl-snackbar">
-    <div class="mdl-snackbar__text"></div>
-    <button class="mdl-snackbar__action" type="button"></button>
-</div>
+
+
+</section>
+
+
+
+
+
+
+@Html.HiddenFor(item => item.ProductID)
+@Html.HiddenFor(item => item.Product.ProductName)
+
 
 
 

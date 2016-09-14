@@ -41,7 +41,7 @@ namespace QualityCaps.Controllers
         public ActionResult Create()
         {
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName");
-            ViewBag.SupplierID = new SelectList(db.Suppliers, "SupplierID", "LastName");
+            ViewBag.SupplierID = new SelectList(db.Suppliers, "SupplierID", "Name");
             return View();
         }
 
@@ -50,7 +50,7 @@ namespace QualityCaps.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProductID,SupplierID,CategoryID,ProductName,UnitPrice,Discription")] Product product)
+        public ActionResult Create([Bind(Include = "ProductID,SupplierID,CategoryID,ProductName,UnitPrice,Description")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -60,7 +60,7 @@ namespace QualityCaps.Controllers
             }
 
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", product.CategoryID);
-            ViewBag.SupplierID = new SelectList(db.Suppliers, "SupplierID", "LastName", product.SupplierID);
+            ViewBag.SupplierID = new SelectList(db.Suppliers, "SupplierID", "Name", product.SupplierID);
             return View(product);
         }
 
@@ -77,7 +77,7 @@ namespace QualityCaps.Controllers
                 return HttpNotFound();
             }
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", product.CategoryID);
-            ViewBag.SupplierID = new SelectList(db.Suppliers, "SupplierID", "LastName", product.SupplierID);
+            ViewBag.SupplierID = new SelectList(db.Suppliers, "SupplierID", "Name", product.SupplierID);
             return View(product);
         }
 
@@ -86,7 +86,7 @@ namespace QualityCaps.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductID,SupplierID,CategoryID,ProductName,UnitPrice,Discription")] Product product)
+        public ActionResult Edit([Bind(Include = "ProductID,SupplierID,CategoryID,ProductName,UnitPrice,Description")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +95,7 @@ namespace QualityCaps.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", product.CategoryID);
-            ViewBag.SupplierID = new SelectList(db.Suppliers, "SupplierID", "LastName", product.SupplierID);
+            ViewBag.SupplierID = new SelectList(db.Suppliers, "SupplierID", "Name", product.SupplierID);
             return View(product);
         }
 

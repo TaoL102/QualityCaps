@@ -47,7 +47,7 @@ namespace QualityCaps.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SupplierID,LastName,FirstMidName,PhoneHome,PhoneWork,PhoneMobile,Email")] Supplier supplier)
+        public ActionResult Create([Bind(Include = "SupplierID,Name,PhoneHome,PhoneWork,PhoneMobile,Email")] Supplier supplier)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace QualityCaps.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SupplierID,LastName,FirstMidName,PhoneHome,PhoneWork,PhoneMobile,Email")] Supplier supplier)
+        public ActionResult Edit([Bind(Include = "SupplierID,Name,PhoneHome,PhoneWork,PhoneMobile,Email")] Supplier supplier)
         {
             if (ModelState.IsValid)
             {

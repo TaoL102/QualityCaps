@@ -44,6 +44,7 @@ namespace QualityCaps.Controllers
             item.UnitPrice = product.Product.UnitPrice;
             item.ColorName = product.Color.ColorName;
             item.Category = product.Product.Category.CategoryName;
+            item.ImageUrl = product.ImageUrl;
 
             // Check if session exists
             if (Session["ShoppingCartProducts"] == null||( Session["ShoppingCartProducts"] as List<ShoppingCartItemViewModel>).Count==0)
