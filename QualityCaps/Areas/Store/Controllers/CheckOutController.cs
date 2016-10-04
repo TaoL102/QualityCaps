@@ -30,7 +30,6 @@ namespace QualityCaps.Controllers
             if (Session["ShoppingCartProducts"] != null)
             {
                 dbSession = (List<ShoppingCartItemViewModel>)Session["ShoppingCartProducts"];
-              
 
                 // Customer Information
                 string usrID = User.Identity.GetUserId();
@@ -39,10 +38,11 @@ namespace QualityCaps.Controllers
 
                 // Total info
                 order.SubTotal = dbSession.Sum(p => p.UnitPrice * p.Quantity);
-                order.Gst = 15;
-                order.GrandTotal =Convert.ToDecimal( order.SubTotal * (1 + order.Gst * Convert.ToDecimal( 0.01)));
-
-
+                order.Gst =
+                    dbSession.Sum(
+                        p =>
+                            p.UnitPrice * p.Quantity*
+                            Convert.ToDecimal(p.GstPercentage*0.01));
             }
   
             // Session
@@ -70,6 +70,9 @@ namespace QualityCaps.Controllers
                 // Assign order id
                 order.OrderID = Guid.NewGuid().ToString();
 
+                // Order Date
+                order.OrderDate=DateTime.Now;
+
                 // Customer Information
                 string usrID = User.Identity.GetUserId();
                 order.CustomerID = db.Customers.Where(c => c.AccountID.Equals(usrID)).SingleOrDefault().CustomerID;
@@ -79,8 +82,11 @@ namespace QualityCaps.Controllers
 
                 // Total info
                 order.SubTotal = dbSession.Sum(p => p.UnitPrice * p.Quantity);
-                order.Gst = 15;
-                order.GrandTotal = Convert.ToDecimal(order.SubTotal * (1 + order.Gst * Convert.ToDecimal(0.01)));
+                order.Gst =
+                 dbSession.Sum(
+                     p =>
+                         p.UnitPrice *
+                         Convert.ToDecimal(p.GstPercentage * 0.01));
 
                 // Items in order
                 List<OrderProduct> items = new List<OrderProduct>();

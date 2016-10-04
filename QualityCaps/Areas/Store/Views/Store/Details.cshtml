@@ -1,92 +1,10 @@
 ﻿@using QualityCaps.Models
 @model QualityCaps.Models.ProductColor
 
-@{
-    ViewBag.Title = "Details";
-}
-
-@Scripts.Render("~/bundles/jquery")
-
-
-<script type="text/javascript">
-    $(function () {
-        'use strict';
-        // COLOR RADIO buttons click event handler
-        $("input[type=radio][name=colorRadios]")
-            .change(function() {
-                console.log("radio clicked.");
-                // Get radio value(Color ID)
-                var url =" @Url.Action("GetProductPic","Store",new {area="Store"})";
-                var productID=@Html.Raw(Json.Encode(Model.ProductID));
-                var colorID = $("input[type=radio][name=colorRadios]:checked").val();
-
-                // Perform the ajax post
-                $.ajax({
-                    type: "POST",
-                    url : url,
-                    data:  { productID: productID, colorID: colorID },
-                }).done(function(data) {
-                    var url = @Url.Content("~/Images/") + "/"+data;
-                    $("#productPic").attr("src", url);
-
-                }).fail(function()  {
-                    alert("Sorry. Unable to get picture due to server connection failure. ");
-                });
-
-            });
 
 
 
-        // ADD TO CART button click event handler
-        $("#btn_AddToCart").click(function () {
-            // Get the id from the link
-            var url = "@Url.Action("AddToCart","ShoppingCart",new {area="Store"})";
-            var productID=@Html.Raw(Json.Encode(Model.ProductID));
-                var colorID;
-            // Check which color has been chosen
-            if (!$("input[name='colorRadios']:checked").val()) {
-                alert('Nothing is checked!');
-                return;
-            }
-            else {
-                colorID = $("input[name='colorRadios']:checked").val();
-            }
 
-            if (productID != ''&&colorID!='') {
-                // Perform the ajax post
-                $.ajax({
-                    type: "POST",
-                    url : url,
-                    data:  { productID: productID, colorID: colorID },
-                }).done(function(data)  {
-                    var totalQuantity=0;
-                    // Sum up
-                    data.forEach(function(element){totalQuantity+=element.Quantity})
-
-                    // Update Cart Icon quantity
-                    $("#cartTotalQuantity").text(totalQuantity);
-
-                    // Show snack bar message
-                    var snackbarContainer = document.querySelector('#snack_bar');
-                    var data = {message: "@Model.Product.ProductName "+ " added to cart."};
-                    snackbarContainer.MaterialSnackbar.showSnackbar(data);
-
-
-                }).fail(function()  {
-                    alert("Sorry. Unable to add item to cart due to server connection failure. ");
-                });
-
-
-
-            };
-        }); });
-</script>
-
-
-<section>
-    <div >
-        <div class="container">
-            <div class="main main-raised main-product">
                 <div class="row ">
                     <div class="col-md-6 col-sm-6">
                         <div class="tab-content">
@@ -164,10 +82,11 @@
 
                                 @foreach (Color color in ViewBag.colorID)
                                 {
+                                   
                                     <style>
-                                        #@(String.Format("{0}{1}", "colorRadio", color.ColorID)) {
-                                            color: @color.RGBCode
-                                        }
+                                         #@(String.Format("{0}{1}", "colorRadio", color.ColorID)) {
+                                             color: @color.RGBCode
+                                         }
                                         #@(String.Format("{0}{1}", "colorRadio", color.ColorID)) .circle {
                                             border: 1px solid @color.RGBCode;
                                         }
@@ -180,10 +99,19 @@
                                         #@(String.Format("{0}{1}", "colorRadio", color.ColorID)).circle {
                                             border-color: @color.RGBCode;
                                         }
-                                    </style>
+
+                                </style>
                                     <div class="radio">
                                         <label id="@(String.Format("{0}{1}", "colorRadio", color.ColorID))">
-                                            <input type="radio" name="colorRadios" value="@color.ColorID">
+                                            
+                                            @if (ViewBag.currentColorID.Equals(color.ColorID))
+                                            {
+                                                <input type="radio" name="colorRadios" value="@color.ColorID" checked>
+                                            }
+                                            else
+                                            {
+                                                <input type="radio" name="colorRadios" value="@color.ColorID">
+                                            }
                                             @color.ColorName
                                         </label>
                                     </div>
@@ -199,22 +127,52 @@
                                     </select>
                                 </div>*@
                         </div>
-                        <div class="row text-right">
+                        <div class="row ">
                             <button class="btn btn-rose btn-round" id="btn_AddToCart">Add to Cart &nbsp;<i class="material-icons">shopping_cart</i></button>
                         </div>
                     </div>
                 </div>
-            </div>
-
-        </div>
-    </div>
 
 
 
-</section>
+<script type="text/javascript">
+    $(function () {
+        'use strict';
+
+        // COLOR RADIO buttons click event handler
+        $("input[type=radio][name=colorRadios]")
+            .change(function() {
+                var actionUrl =" @Url.Action("GetProductPic","Store",new {area="Store"})";
+                var imgDir = @Url.Content("~/Images/");
+
+                // Get radio value(Color ID)
+                var productID=@Html.Raw(Json.Encode(Model.ProductID));
+                var colorID = $("input[type=radio][name=colorRadios]:checked").val();
+                console.log(productID);
+                funProduct_Detail_Color_Radio_Button_Click(productID, colorID, actionUrl, imgDir);
+            });
 
 
 
+        // ADD TO CART button click event handler
+        $("#btn_AddToCart", this)
+            .click(function () {
+                // Action URL
+                var url = "@Url.Action("AddToCart", "ShoppingCart", new {area = "Store"})";
+                var productID=@Html.Raw(Json.Encode(Model.ProductID));
+                var colorID = $("input[name='colorRadios']:checked").val();
+                var productName=@Html.Raw(Json.Encode(Model.Product.ProductName));
+                var productColor=@Html.Raw(Json.Encode(Model.Color.ColorName));
+                if (productID != '' && colorID != '') {
+                    // Perform the ajax post
+                    funAddItemToCart(productID, colorID, productName,productColor,url);
+                };
+
+            });
+        });
+</script>
+
+@Scripts.Render("~/bundles/bundleCustomizedJS")
 
 
 

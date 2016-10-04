@@ -6,8 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls.Expressions;
 using Microsoft.Ajax.Utilities;
 using QualityCaps.Models;
+using PagedList;
 
 namespace QualityCaps.Controllers
 {
@@ -27,10 +29,14 @@ namespace QualityCaps.Controllers
         //}
 
         // GET: Search for Products based on category & color
-        public ActionResult Index(string search, string[] chkBoxesCategoryIDs, string[] chkBoxesColorIDs,string[] chkBoxesSupplierIDs)
+        public ActionResult Index(string search, string[] chkBoxesCategoryIDs, string[] chkBoxesColorIDs, string[] chkBoxesSupplierIDs, int? page)
         {
+
+
             var productColors = db.ProductColors.Include(p => p.Color).Include(p => p.Product);
             var supplers = db.Suppliers;
+            // Search key word
+            ViewBag.search = search;
 
             // Category List
             var categoryList = new List<Category>();
@@ -55,7 +61,7 @@ namespace QualityCaps.Controllers
             {
                 productColors = productColors.Where(s => s.Product.ProductName.Contains(search));
             }
-            if (chkBoxesColorIDs!=null)
+            if (chkBoxesColorIDs != null)
             {
                 productColors = productColors.Where(s => chkBoxesColorIDs.Contains(s.ColorID));
             }
@@ -68,8 +74,16 @@ namespace QualityCaps.Controllers
                 productColors = productColors.Where(s => chkBoxesSupplierIDs.Contains(s.Product.SupplierID));
             }
 
+            // 
+            ViewBag.chkBoxesCategoryIDs = chkBoxesCategoryIDs ?? new string[0];
+            ViewBag.chkBoxesColorIDs = chkBoxesColorIDs ?? new string[0];
+            ViewBag.chkBoxesSupplierIDs = chkBoxesSupplierIDs ?? new string[0];
 
-            return View(productColors.ToList());
+            int pageSize = 4;
+
+            int pageNumber = (page ?? 1);
+
+            return View(productColors.OrderBy(p => p.Product.ProductName).ToPagedList(pageNumber, pageSize));
         }
 
         // GET: ProductColors/Details/5
@@ -94,7 +108,10 @@ namespace QualityCaps.Controllers
             colorList.AddRange(colorQry.Distinct());
             ViewBag.colorID = colorList;
 
-            return View(productColor);
+            // Current Product color
+            ViewBag.currentColorID = colorID;
+
+            return PartialView("Details", productColor);
         }
 
         /// <summary>
@@ -116,10 +133,10 @@ namespace QualityCaps.Controllers
                 return HttpNotFound();
             }
 
-            string imageUrl=null;
+            string imageUrl = null;
 
             // Get the picURL
-            var item = db.ProductColors.FirstOrDefault(p => p.ProductID.Equals(productID)&&p.ColorID.Equals(colorID));
+            var item = db.ProductColors.FirstOrDefault(p => p.ProductID.Equals(productID) && p.ColorID.Equals(colorID));
             if (item != null)
             {
                 imageUrl = item.ImageUrl;

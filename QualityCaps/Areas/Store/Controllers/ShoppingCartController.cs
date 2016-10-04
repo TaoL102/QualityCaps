@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using QualityCaps.Models;
 
 namespace QualityCaps.Controllers
@@ -42,6 +44,7 @@ namespace QualityCaps.Controllers
             item.ColorID = colorID;
             item.ProductName = product.Product.ProductName;
             item.UnitPrice = product.Product.UnitPrice;
+            item.GstPercentage = product.Product.GstPercentage;
             item.ColorName = product.Color.ColorName;
             item.Category = product.Product.Category.CategoryName;
             item.ImageUrl = product.ImageUrl;
@@ -51,6 +54,7 @@ namespace QualityCaps.Controllers
             {
                 item.Quantity = 1;
                 Session["ShoppingCartProducts"] = new List<ShoppingCartItemViewModel>() { item };
+                dbSession = (List<ShoppingCartItemViewModel>)Session["ShoppingCartProducts"];
             }
             else
             {
@@ -68,14 +72,17 @@ namespace QualityCaps.Controllers
                     dbSession.Add(item);
                 }
 
-
                 //Add item to session
                 Session["ShoppingCartProducts"] = dbSession;
+
+
             }
-            return Json(dbSession);
+            int quantity = dbSession.Sum(p => p.Quantity);
+
+            return Json(quantity);
         }
 
-        // Get the total amount of items in cart
+        // Get the cartTotal amount of items in cart
         public ActionResult GetItemsTotalAmount() {
             int quantity = 0 ;
             if (Session["ShoppingCartProducts"] != null)
@@ -113,14 +120,54 @@ namespace QualityCaps.Controllers
         }
 
 
+        public ActionResult ModifyItemQuantity(string productID, string colorID, string quantity)
+        {
+            int cartTotalQty = 0;
+            decimal cartSubTotal=0;
+            decimal cartGst=0;
+            decimal cartTotal=0;
+            decimal itemTotal = 0;
+             
+            List<ShoppingCartItemViewModel> dbSession = new List<ShoppingCartItemViewModel>();
+            if (Session["ShoppingCartProducts"] != null)
+            {
+                dbSession = (List<ShoppingCartItemViewModel>)Session["ShoppingCartProducts"];
+                // Get this item
+                var item = dbSession.Where(p => p.ProductID.Equals(productID) && p.ColorID.Equals(colorID)).FirstOrDefault();
+                if (Convert.ToInt32(quantity) > 0)
+                {
+                    item.Quantity = Convert.ToInt32(quantity);
+                    itemTotal = item.TotalPrice;
+                }
+                else
+                {
+                    dbSession.Remove(item);
+                }
 
+                // success: Return json
+                cartTotalQty = dbSession.Sum(p => p.Quantity);
+                cartSubTotal = dbSession.Sum(p => p.TotalPrice);
+                cartGst=dbSession.Sum(
+                     p =>
+                         p.TotalPrice*
+                         Convert.ToDecimal(p.GstPercentage * 0.01));
+                cartTotal = cartSubTotal + cartGst;
+                
 
+                Session["ShoppingCartProducts"] = dbSession;
+            }
 
+            string returnJson= new JavaScriptSerializer().Serialize(new
+            {
+                CartTotalQty = cartTotalQty,
+                CartSubTotal = cartSubTotal.ToString("C2", CultureInfo.CurrentCulture),
+                CartGst = cartGst.ToString("C2", CultureInfo.CurrentCulture),
+                CartTotal = cartTotal.ToString("C2", CultureInfo.CurrentCulture),
+                ItemTotal= itemTotal.ToString("C2", CultureInfo.CurrentCulture)
+            });
 
-
-
-
-
+            return Json(returnJson);
+        }
 
 
 

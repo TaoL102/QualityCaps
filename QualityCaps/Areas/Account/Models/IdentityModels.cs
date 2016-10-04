@@ -48,6 +48,13 @@ namespace QualityCaps.Models
             // Modify the table name to "Account" and id to "AccountID"
             modelBuilder.Entity<ApplicationUser>().ToTable("Accounts").Property(p => p.Id).HasColumnName("AccountID");
 
+            modelBuilder.Entity<IdentityRole>().ToTable("Roles").Property(p => p.Id).HasColumnName("RoleID");
+
+            modelBuilder.Entity<IdentityUserLogin>().ToTable("ExternalLoginAccounts");
+
+            modelBuilder.Entity<IdentityUserRole>().ToTable("AccountRoles");
+
+
         }
 
         public System.Data.Entity.DbSet<QualityCaps.Models.Customer> Customers { get; set; }

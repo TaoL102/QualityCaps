@@ -3,7 +3,7 @@ namespace QualityCaps.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialCreate : DbMigration
+    public partial class Init : DbMigration
     {
         public override void Up()
         {
@@ -25,7 +25,8 @@ namespace QualityCaps.Migrations
                         CategoryID = c.String(nullable: false, maxLength: 128),
                         ProductName = c.String(nullable: false),
                         UnitPrice = c.Decimal(nullable: false, storeType: "money"),
-                        Discription = c.String(),
+                        GstPercentage = c.Double(nullable: false),
+                        Description = c.String(),
                     })
                 .PrimaryKey(t => t.ProductID)
                 .ForeignKey("dbo.Categories", t => t.CategoryID, cascadeDelete: true)
@@ -80,8 +81,8 @@ namespace QualityCaps.Migrations
                         OrderID = c.String(nullable: false, maxLength: 128),
                         CustomerID = c.String(nullable: false, maxLength: 128),
                         OrderStatusID = c.String(nullable: false, maxLength: 128),
+                        OrderDate = c.DateTime(nullable: false),
                         SubTotal = c.Decimal(nullable: false, storeType: "money"),
-                        Gst = c.Decimal(nullable: false, storeType: "money"),
                         GrandTotal = c.Decimal(nullable: false, storeType: "money"),
                     })
                 .PrimaryKey(t => t.OrderID)
@@ -113,7 +114,7 @@ namespace QualityCaps.Migrations
                 c => new
                     {
                         AccountID = c.String(nullable: false, maxLength: 128),
-                        isAccDisabled = c.Boolean(nullable: false),
+                        IsAccDisabled = c.Boolean(nullable: false),
                         Email = c.String(maxLength: 256),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(),
@@ -163,7 +164,7 @@ namespace QualityCaps.Migrations
                     })
                 .PrimaryKey(t => new { t.UserId, t.RoleId })
                 .ForeignKey("dbo.Accounts", t => t.UserId, cascadeDelete: true)
-                .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
+                .ForeignKey("dbo.AccountRoles", t => t.RoleId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
             
@@ -181,8 +182,7 @@ namespace QualityCaps.Migrations
                 c => new
                     {
                         SupplierID = c.String(nullable: false, maxLength: 128),
-                        LastName = c.String(nullable: false, maxLength: 50),
-                        FirstMidName = c.String(nullable: false, maxLength: 50),
+                        Name = c.String(nullable: false, maxLength: 50),
                         PhoneHome = c.String(),
                         PhoneWork = c.String(),
                         PhoneMobile = c.String(),
@@ -191,7 +191,7 @@ namespace QualityCaps.Migrations
                 .PrimaryKey(t => t.SupplierID);
             
             CreateTable(
-                "dbo.AspNetRoles",
+                "dbo.AccountRoles",
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128),
@@ -204,7 +204,7 @@ namespace QualityCaps.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AccountRoles");
             DropForeignKey("dbo.Products", "SupplierID", "dbo.Suppliers");
             DropForeignKey("dbo.ProductColors", "ProductID", "dbo.Products");
             DropForeignKey("dbo.OrderProducts", new[] { "ProductID", "ColorID" }, "dbo.ProductColors");
@@ -217,7 +217,7 @@ namespace QualityCaps.Migrations
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.Accounts");
             DropForeignKey("dbo.ProductColors", "ColorID", "dbo.Colors");
             DropForeignKey("dbo.Products", "CategoryID", "dbo.Categories");
-            DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.AccountRoles", "RoleNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
@@ -232,7 +232,7 @@ namespace QualityCaps.Migrations
             DropIndex("dbo.ProductColors", new[] { "ProductID" });
             DropIndex("dbo.Products", new[] { "CategoryID" });
             DropIndex("dbo.Products", new[] { "SupplierID" });
-            DropTable("dbo.AspNetRoles");
+            DropTable("dbo.AccountRoles");
             DropTable("dbo.Suppliers");
             DropTable("dbo.OrderStatus");
             DropTable("dbo.AspNetUserRoles");

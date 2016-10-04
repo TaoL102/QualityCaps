@@ -1,29 +1,45 @@
 ﻿@using Microsoft.AspNet.Identity
 
-<li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="material-icons">account_circle</i> <b class="caret"></b></a>
+@if (Request.IsAuthenticated)
+{
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+            @User.Identity.Name
+
+            <i class="material-icons">account_circle</i>
+            <b class="caret">
+            </b>
+        </a>
         <ul class="dropdown-menu">
 
-        @if (Request.IsAuthenticated)
-        {
-            using (Html.BeginForm("LogOff", "Account", new { area = "Account" }, FormMethod.Post, new { id = "logoutForm" }))
+
+            @using (Html.BeginForm("LogOff", "Account", new { area = "Account" }, FormMethod.Post, new { id = "logoutForm" }))
             {
-                @Html.AntiForgeryToken()
+            @Html.AntiForgeryToken()
             }
             <li>
-                @Html.ActionLink("Account", "Index", "Manage", new { area = "Account" }, new { title = "Manage" })
+                @Html.ActionLink("Your Account", "Index", "Manage", new { area = "Account" }, new { title = "Manage" })
             </li>
-            <li>  <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-            if (User.IsInRole("Admin"))
+            <li>
+                @Html.ActionLink("Your Orders", "ManageOrders", "Manage", new { area = "Account" }, new { title = "Manage Orders" })
+            </li>
+            <li class="divider"></li>
+            @if (User.IsInRole("Admin"))
             {
-                <li>@Html.ActionLink("Admin", "Index", "Admin", new { area = "Admin" }, null)</li>
+            <li>@Html.ActionLink("Admin", "Index", "Admin", new { area = "Admin" }, null)</li>
             }
-        }
-        else
-        {
-            <li> @Html.ActionLink("Register", "Register", "Account", new { area = "Account" }, new { id = "registerLink" })</li>
-            <li>    @Html.ActionLink("Log in", "Login", "Account", new { area = "Account" }, new { id = "loginLink" })</li>
+            <li class="divider"></li>
+            <li>  <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
 
-        }
-    </ul>
+        </ul>
     </li>
+}
+else
+{
+            <li>    @Html.ActionLink("Log in / Register", "Login", "Account", new { area = "Account" }, new { id = "loginLink" })</li>
+
+}
+
+
+

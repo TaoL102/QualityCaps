@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -10,6 +12,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using QualityCaps.Models;
 using System.Web.Security;
+using Facebook;
 
 namespace QualityCaps.Controllers
 {
@@ -104,7 +107,8 @@ namespace QualityCaps.Controllers
                         return RedirectToAction("index", "Admin", new { area = "Admin" });
                     }
 
-                    return RedirectToLocal(returnUrl);
+                    //return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Manage");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -160,6 +164,41 @@ namespace QualityCaps.Controllers
             }
         }
 
+        public static void SendRegistrationConfirmationEmail(
+            string userName="",
+            string password="",
+            string toMail = ""
+        , string ccMail = ""
+        , string bccMail = "")
+        {
+            SmtpClient client = new SmtpClient("mail.unitec.ac.nz");
+            MailMessage message = new MailMessage();
+            message.IsBodyHtml = false;
+            message.Priority = MailPriority.Normal;
+            string fromAddress = "liut40@myunitec.ac.nz";
+
+            message.From = new MailAddress(fromAddress);
+            message.To.Add(new MailAddress(toMail));
+            if (ccMail != null && ccMail.Trim().Length > 0 && ccMail.Contains("@"))
+            {
+                message.CC.Add(new MailAddress(ccMail));
+            }
+            if (bccMail != null && bccMail.Trim().Length > 0 && bccMail.Contains("@"))
+            {
+                message.Bcc.Add(new MailAddress(bccMail));
+            }
+            message.Subject = "Registration Confirmation (Quanlity Caps)";
+            StringBuilder sb = new StringBuilder();
+            sb.Append("-------------------------------------------------\n");
+            sb.Append("User Name: " + userName+"\n");
+            sb.Append("-------------------------------------------------\n");
+            sb.Append("Password : "+password+"\n");
+            sb.Append("-------------------------------------------------\n");
+            message.Body = sb.ToString();
+
+            client.Send(message);
+        }
+
         //
         // GET: /Account/Register
         [AllowAnonymous]
@@ -211,6 +250,9 @@ namespace QualityCaps.Controllers
 
                      //Assign Role to user Here      
                     await this.UserManager.AddToRoleAsync(user.Id, "Customer");
+
+                    // Send confirmation Email
+                    SendRegistrationConfirmationEmail(model.Email, model.Password, model.Email, null, null);
 
                     return RedirectToAction("Index", "Home",new { area="Home"});
                 }
@@ -383,13 +425,40 @@ namespace QualityCaps.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    //return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Manage");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
                 case SignInStatus.Failure:
                 default:
+                    // Get facebook Email.
+                    // This is due to facebook API limitation,
+                    if (loginInfo.Login.LoginProvider == "Facebook")
+                    {
+                        var identity = AuthenticationManager.GetExternalIdentity(DefaultAuthenticationTypes.ExternalCookie);
+                        var access_token = identity.FindFirstValue("FacebookAccessToken");
+                        var fb = new FacebookClient(access_token);
+                        dynamic myInfo = fb.Get("/me?fields=email"); // specify the email field
+                        loginInfo.Email = myInfo.email;
+                    }
+
+
+                    // If the user has an account, but not assosiate with external account
+                    // Add the external login info to AspNetUserLogins database table to associate
+                    // And then if successful, sign in this account. 
+                    // Find account by email
+                    var user = UserManager.FindByEmail(loginInfo.Email);
+                    if (user != null) { 
+                    var addLoginResult = await UserManager.AddLoginAsync(user.Id, loginInfo.Login);
+                    if (addLoginResult.Succeeded)
+                    {
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        return RedirectToLocal(returnUrl);
+                    }}
+
+
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
@@ -530,6 +599,12 @@ namespace QualityCaps.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+
+
+
+
+
+
         #endregion
     }
 }

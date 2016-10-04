@@ -1,0 +1,105 @@
+﻿@using System.Globalization
+@model IEnumerable<QualityCaps.Models.Order>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<section id="sectionManageOrders">
+    <div class="container">
+        <div class="row">
+
+            @foreach (var item in Model)
+            {
+                <div class="">
+                    <div class="card">
+                        <div class="content ">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h6 class="panel-title">
+                                            <a data-toggle="collapse" href="#@item.OrderID">
+                                                @Html.DisplayNameFor(model => model.OrderID) @item.OrderID
+                                                <i class="fa fa-caret-up pull-right"></i>
+                                            </a>
+                                        </h6>
+                                    </div>
+                                    <div id="@item.OrderID" class="panel-collapse collapse ">
+                                        <div class="panel-body panel-scroll">
+                                            <div class="table-responsive">
+                                                <table class="table table-shopping">
+
+                                                    <tbody>
+                                                        @foreach (var product in item.OrderProducts)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="img-container">
+                                                                        <img src="@Url.Content("~/Images/")@product.ProductColor.ImageUrl" alt="...">
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="@Url.Action("Details", "Store", new {area = "Store", productID = product.ProductID, colorID = product.ColorID})">@product.ProductColor.Product.ProductName</a>
+                                                                    <br />@product.ProductID
+                                                                    <br />@product.ProductColor.Product.Category.CategoryName
+                                                                </td>
+                                                                <td>
+                                                                    @product.ProductColor.Color.ColorName
+                                                                </td>
+                                                                <td>
+                                                                    @product.ProductColor.Product.UnitPrice.ToString("C2", CultureInfo.CurrentCulture)  
+                                                                </td>
+                                                                <td>
+                                                                    @product.Quantity
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="footer text-center">
+                                @if (item.OrderStatus.OrderStatusID.Equals("Status001"))
+                                {
+                                    <span class="pull-left label label-warning">@Html.DisplayFor(modelItem => item.OrderStatus.StatusName)</span>
+                                }
+                                else
+                                {
+                                    <span class="pull-left label label-info">@Html.DisplayFor(modelItem => item.OrderStatus.StatusName)</span>
+                                }
+
+                                <span class="text-center" >
+                                    @Html.DisplayNameFor(model => model.OrderDate): @item.OrderDate.ToString("dd MMM yyyy", CultureInfo.CurrentCulture)
+                                </span>
+                                <span class="pull-right">
+                                    @Html.DisplayNameFor(model => model.GrandTotal): @Html.DisplayFor(modelItem => item.GrandTotal)
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+</section>

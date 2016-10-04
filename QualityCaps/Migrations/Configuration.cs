@@ -12,7 +12,6 @@ namespace QualityCaps.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "QualityCaps.Models.ApplicationDbContext";
         }
 
         protected override void Seed(QualityCaps.Models.ApplicationDbContext context)
@@ -31,6 +30,19 @@ namespace QualityCaps.Migrations
             //
 
 
+            // ORDERSTATUS
+            context.OrderStatus.AddOrUpdate(o=>o.OrderStatusID,
+                new OrderStatus()
+                {
+                    OrderStatusID = "Status001",
+                    StatusName = "WAITING",
+                },
+                new OrderStatus()
+                {
+                    OrderStatusID = "Status002",
+                    StatusName = "SHIPPED",
+                }
+                );
 
             // CATEGORY
             context.Categories.AddOrUpdate(c => c.CategoryID,
@@ -153,6 +165,7 @@ namespace QualityCaps.Migrations
                     CategoryID = "Category001",
                     ProductName = "9FORTY League Basic Yankees Cap",
                     UnitPrice = Convert.ToDecimal(39.95),
+                    GstPercentage = 15,
                     Description = @"The solid - coloured baseball cap from the 9FORTY series by New Era goes back to its sports roots and impresses with a clean look.The trendy peak cap is only decorated with the embroidered New York Yankees logo and a discreet brand embroidery on the side."
                 },
                 new Product()
@@ -162,6 +175,7 @@ namespace QualityCaps.Migrations
                     CategoryID = "Category001",
                     ProductName = "Denim Flexfit Baseball Cap",
                     UnitPrice = Convert.ToDecimal(29.95),
+                    GstPercentage = 15,
                     Description = @"This elastic peaked cap from Kangol comes in a trendy denim look. The embroidered brand logo on the discreetly reinforced front and the Kangol label sewn on the closed back complete this casual baseball cap with stitched eyelets."
                 },
                 new Product()
@@ -171,6 +185,7 @@ namespace QualityCaps.Migrations
                     CategoryID = "Category001",
                     ProductName = "Clean Trucker Mesh Cap",
                     UnitPrice = Convert.ToDecimal(24.90),
+                    GstPercentage = 15,
                     Description = @"This New Era cap from the popular 39Thirty collection features a soft mesh back and two foam front panels with oversized embroidered raised team logo."
                 },
                 new Product()
@@ -180,6 +195,7 @@ namespace QualityCaps.Migrations
                     CategoryID = "Category001",
                     ProductName = "Active Winter Sports Cap",
                     UnitPrice = Convert.ToDecimal(24.99),
+                    GstPercentage = 15,
                     Description = @"The integrated elastic fitting with size adjustable plastic stopper at the back of the head makes sure this comfortable winter cap from Barts fits perfectly. The wearer of this innovative peaked cap will be pampered with warmth and comfort thanks to the windproof ear and neck protection, as well as the full lining of fluffy fleece."
                 },
                 new Product()
@@ -189,6 +205,7 @@ namespace QualityCaps.Migrations
                     CategoryID = "Category001",
                     ProductName = "Ducor Sun Guard Cap",
                     UnitPrice = Convert.ToDecimal(39),
+                    GstPercentage = 15,
                     Description = @"Original stonewashed look for this classic, lightweight baseball cap. Its sun protection UV 40 allows you to be exposed to the sunshine fourty times longer than you normally could without burning. The skin-friendly organic cotton guarantees maximum wearing comfort."
                 }
 
@@ -200,6 +217,7 @@ namespace QualityCaps.Migrations
                     CategoryID = "Category001",
                     ProductName = "Gosper Cap with Leather Peak",
                     UnitPrice = Convert.ToDecimal(49),
+                    GstPercentage = 15,
                     Description = @"Velvety-soft leather on the upper side of the peak tames the striking army cap from Stetson. Apart from this, the sporty and rough urban cap features textured cotton and has an integrated UV filter."
                 },
                 new Product()
@@ -209,6 +227,7 @@ namespace QualityCaps.Migrations
                     CategoryID = "Category001",
                     ProductName = "Plano Nubuck Baseball Cap by Stetson",
                     UnitPrice = Convert.ToDecimal(49),
+                    GstPercentage = 15,
                     Description = @"The pure cotton with a textured, woven structure is a sporty contrast to the velvety soft nubuck leather peak upper. This combination gives the fully enclosed baseball cap from Stetson an elegant touch. Skin-friendly and breathable properties, stitched ventilation eyelets and an integrated UV filter fully equip this high quality baseball cap for sunny days."
                 },
                 new Product()
@@ -218,6 +237,7 @@ namespace QualityCaps.Migrations
                     CategoryID = "Category001",
                     ProductName = "9FIFTY Patch Dodgers Cap",
                     UnitPrice = Convert.ToDecimal(37.95),
+                    GstPercentage = 15,
                     Description = @"This baseball cap with circular retro logo of the Los Angeles Dodgers on the front will win you over with its solid design. This flat brimmed cap from trendy brand New Era features a reinforced front and typical straight peak. This snapback cap is open at the back and the press studs ensure perfect fit and optimum comfort."
                 },
                 new Product()
@@ -227,6 +247,7 @@ namespace QualityCaps.Migrations
                     CategoryID = "Category001",
                     ProductName = "Datto Winter Army Cap",
                     UnitPrice = Convert.ToDecimal(49.95),
+                    GstPercentage = 15,
                     Description = @"With a warm fleece lining, this robust, coated cotton army cap in a washed leather-effect from Stetson is well prepared for the colder months. Perfectly coordinated details such as eyelets and brand embroidery make the striking cap what it is - unique! With factor 40 sun protection, the cap provides effective protection against autumn and winter sun."
                 },
                 new Product()
@@ -236,6 +257,7 @@ namespace QualityCaps.Migrations
                     CategoryID = "Category001",
                     ProductName = "Championship Army Cap Flexfit",
                     UnitPrice = Convert.ToDecimal(39.95),
+                    GstPercentage = 15,
                     Description = @"The patented, extremely elastic Flexfit lining band makes this army cap from Kangol with its timeless cut incredibly comfortable. Two embroidered ventilation eyelets on each side of the cap keep your head at a pleasant temperature."
                 }
 
@@ -350,9 +372,6 @@ namespace QualityCaps.Migrations
                 }
 
                 );
-
-
-
         }
     }
 }

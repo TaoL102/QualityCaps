@@ -4,104 +4,187 @@
 @{
     ViewBag.Title = "Register";
 }
-@Styles.Render("~/Content/css")
 
 
 <section>
     <div class="container">
         <div class="row">
-            <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+            <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
 
                 <div class="card card-signup">
-                    <h2 class="card-title text-center">Register</h2>
+                    <div class="text-center">
+                        <h4>Register</h4>
+                    </div>
 
                     @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form", role = "form", id = "registerForm" }))
                     {
                         <hr />
-                            @Html.AntiForgeryToken()
+                        @Html.AntiForgeryToken()
 
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="content">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">email</i>
-                                    </span>
-                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email..." })
-                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                                </div>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="content">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">email</i>
+                                </span>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email..." })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </div>
 
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">lock_outline</i>
-                                    </span>
-                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password..." })
-                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">lock_outline</i>
-                                    </span>
-                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password..." })
-                                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">face</i>
-                                    </span>
-                                    @Html.EditorFor(model => model.FirstMidName, new { htmlAttributes = new { @class = "form-control", placeholder = "First Name..." } })
-                                    @Html.ValidationMessageFor(model => model.FirstMidName, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">face</i>
-                                    </span>
-                                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name..." } })
-                                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">phone</i>
-                                    </span>
-                                    @Html.EditorFor(model => model.PhoneHome, new { htmlAttributes = new { @class = "form-control", placeholder = "Phone(Home)..." } })
-                                    @Html.ValidationMessageFor(model => model.PhoneHome, "", new { @class = "text-danger" })
-                                </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">lock_outline</i>
+                                </span>
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password..." })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">lock_outline</i>
+                                </span>
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password..." })
+                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">face</i>
+                                </span>
+                                @Html.EditorFor(model => model.FirstMidName, new { htmlAttributes = new { @class = "form-control", placeholder = "First Name..." } })
+                                @Html.ValidationMessageFor(model => model.FirstMidName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">face</i>
+                                </span>
+                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name..." } })
+                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">phone</i>
+                                </span>
+                                @Html.EditorFor(model => model.PhoneHome, new { htmlAttributes = new { @class = "form-control", placeholder = "Phone(Home)..." } })
+                                @Html.ValidationMessageFor(model => model.PhoneHome, "", new { @class = "text-danger" })
+                            </div>
 
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">phone</i>
-                                    </span>
-                                    @Html.EditorFor(model => model.PhoneWork, new { htmlAttributes = new { @class = "form-control", placeholder = "Phone(Work)..." } })
-                                    @Html.ValidationMessageFor(model => model.PhoneWork, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">phone_android</i>
-                                    </span>
-                                    @Html.EditorFor(model => model.PhoneMobile, new { htmlAttributes = new { @class = "form-control", placeholder = "Phone(Mobile)..." } })
-                                    @Html.ValidationMessageFor(model => model.PhoneMobile, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">home</i>
-                                    </span>
-                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "Address..." } })
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">phone</i>
+                                </span>
+                                @Html.EditorFor(model => model.PhoneWork, new { htmlAttributes = new { @class = "form-control", placeholder = "Phone(Work)..." } })
+                                @Html.ValidationMessageFor(model => model.PhoneWork, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">phone_android</i>
+                                </span>
+                                @Html.EditorFor(model => model.PhoneMobile, new { htmlAttributes = new { @class = "form-control", placeholder = "Phone(Mobile)..." } })
+                                @Html.ValidationMessageFor(model => model.PhoneMobile, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="input-group" id="addrContainer">
+                                <span class="input-group-addon">
+                                    <i class="material-icons">home</i>
+                                </span>
+                                <div>
+                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "Address...", id = "addrSearchBox" } })
                                     @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="footer text-center">
-                                    <a href="javascript:document.getElementById('registerForm').submit()" class="btn btn-primary btn-round">Register</a>
-                                </div>
+                                <div id="addrSearchResult"  >
 
-                            </div> }
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="text-center">
+                            <input class="btn  btn-primary btn-lg btn-simple" value="Register" type="submit">
+                        </div>
+                    }
                 </div>
             </div>
 
         </div>
     </div>
 
-
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-        @Scripts.Render("~/bundles/materialdesign")
-    }
-
 </section>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    $(function () {
+        var lastValue = '';
+        $("#addrSearchBox").on('change keyup paste mouseup', function () {
+
+            if ($(this).val() != lastValue && $(this).val().length >= 5) {
+                lastValue = $(this).val();
+
+                // Perform AJAX
+                $.ajax({
+                    type: "GET",
+                    url: "https://anypoint.mulesoft.com/apiplatform/proxy/https://api.nzpost.co.nz/privateaddresschecker/1.0/suggest",
+                    headers: {
+                        "accept": "application/json"
+                    },
+                    data: {
+                        q: lastValue,
+                        type: "All",
+                        max: 5,
+                        client_id: "4026952f373c461d9b2eeafa914b54fa",
+                        client_secret: "cdbdb286f2234760A9C5622AAA9A2347"
+                    },
+                }).done(function (data) {
+
+                    if (data) {
+                        // Clear the result to the result div
+                    $("#addrSearchResult").empty();
+
+                    // Add each address into the div
+                    data.addresses.forEach(function (element) {
+                        var div_Addr = document.createElement("div");
+                        div_Addr.className = "addrDiv";
+                        div_Addr.innerHTML = element.FullAddress;
+
+                        // Click Event handler
+                        div_Addr.onclick = function () {
+                            console.log("addrLabel clicked");
+                            var addr = element.FullAddress;
+
+                            // Add this address to the address text box
+                            $("#addrSearchBox").val(addr);
+
+
+
+                            // Close popover
+                            $("#addrSearchBox").popover('hide');
+                        }
+
+                        // Append the result to the result div
+                        $("#addrSearchResult").append(div_Addr);
+                    });
+
+                    // Set the popover content and show
+                    $("#addrSearchBox")
+                        .popover({
+                            placement: "bottom",
+                            trigger: "manual",
+                            html:true,
+                            content: function () {return  $("#addrSearchResult").children() }
+                        }).popover("show");
+                    }
+
+                }).fail(function () {
+                    $("#notificationContent").html("<b>Error Alert:</b> Error to validate address due to connection to NZPost failure.");
+                    $("#notification").css("visibility", "visible").attr("class", "alert alert-danger").fadeIn().delay(1000).fadeOut();
+                });
+
+            }
+        });
+
+
+    });
+</script>
+

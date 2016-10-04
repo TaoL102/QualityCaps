@@ -7,13 +7,13 @@ namespace QualityCaps.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class DeleteSupplierLastName : IMigrationMetadata
+    public sealed partial class Init : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(DeleteSupplierLastName));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Init));
         
         string IMigrationMetadata.Id
         {
-            get { return "201609120102534_DeleteSupplierLastName"; }
+            get { return "201609260156088_Init"; }
         }
         
         string IMigrationMetadata.Source

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace QualityCaps.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -23,6 +24,13 @@ namespace QualityCaps.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+
+        public ActionResult ErrorNotFound()
+        {
+           
 
             return View();
         }

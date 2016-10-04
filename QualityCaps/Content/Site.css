@@ -1,4 +1,271 @@
-﻿
+﻿/* -- ALL --*/
+
+html  {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+}
+
+.btn.btn-primary:focus, .btn.btn-primary:active, .btn.btn-primary:hover,
+.navbar .navbar-nav > li > a.btn.btn-primary:focus,
+.navbar .navbar-nav > li > a.btn.btn-primary:active,
+.navbar .navbar-nav > li > a.btn.btn-primary:hover {
+    box-shadow: none;
+    background-color: #1b9a59;
+}
+
+.btn:hover,
+/*.btn:active,*/
+.btn:focus
+{
+    box-shadow: none !important;
+    background-color: #dddddd !important;
+}
+
+.btn {
+    margin: 10px !important;
+    padding: 10px !important;
+}
+
+a {
+     box-shadow: none !important;
+}
+
+hr {
+    margin: 0px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+/* -- ALL --*/
+
+/* -- Nav Start --*/
+
+.navbar .btn {
+    margin: 0px !important;
+}
+
+/* -- Nav Start --*/
+
+/* -- Loader Start-- */
+
+
+
+.spinner {
+  -webkit-animation: rotator 1.4s linear infinite;
+          animation: rotator 1.4s linear infinite;
+            position: fixed;
+  z-index: 2000;
+  height: 2em;
+  width: 2em;
+    overflow: visible;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+    display: none;
+}
+
+
+
+@-webkit-keyframes rotator {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+  }
+}
+
+@keyframes rotator {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+  }
+}
+.path {
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  -webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+          animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+}
+
+@-webkit-keyframes colors {
+  0% {
+    stroke: #4285F4;
+  }
+  25% {
+    stroke: #DE3E35;
+  }
+  50% {
+    stroke: #F7C223;
+  }
+  75% {
+    stroke: #1B9A59;
+  }
+  100% {
+    stroke: #4285F4;
+  }
+}
+
+@keyframes colors {
+  0% {
+    stroke: #4285F4;
+  }
+  25% {
+    stroke: #DE3E35;
+  }
+  50% {
+    stroke: #F7C223;
+  }
+  75% {
+    stroke: #1B9A59;
+  }
+  100% {
+    stroke: #4285F4;
+  }
+}
+@-webkit-keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    -webkit-transform: rotate(450deg);
+            transform: rotate(450deg);
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    -webkit-transform: rotate(450deg);
+            transform: rotate(450deg);
+  }
+}
+
+
+/* -- Loader End-- */
+
+/*-- Login Start --*/
+.btn.btn-just-icon i, .navbar .navbar-nav > li > a.btn.btn-just-icon i {
+    width: 100%;
+}
+.form-group .form-control {
+     margin-bottom: 0px; 
+}
+.card-signup .checkbox {
+    margin-top: 0px;
+}
+.card-signup .radio, .checkbox {
+    margin: 0px;
+}
+.card-signup h5 {
+    margin: 0px;
+}
+.card-signup .sign-up-icon {
+    font-size: 3em;
+    margin: 10px;
+}
+/*-- Login End--*/
+
+/*-- Filter Start-- */
+
+
+  #filterSideBar {
+      
+    overflow: hidden;
+     height: 80%;
+    z-index: 10;
+     
+     
+  }
+      #filterSideBar form {
+     
+          height: 100%;
+       background: #F05F40;
+overflow: auto;
+        padding: 30px;
+  }
+
+
+
+
+
+    #filterSideBar .checkbox {
+        margin: 0px;
+        padding: 0px;
+}
+
+  #filterSideBar .checkbox label {
+    color: black;
+     /*font-size: 12px;*/
+         line-height: 1;
+         margin-top: 10px;
+      margin-left: 0px;
+        padding: 0px;
+}
+  #filterSideBar .checkbox .checkbox-material {
+      top: 0px;
+  }
+
+   #filterSideBar .checkbox .checkbox-material .check {
+    border: 1px solid #ffffff ;
+       border-radius: 0px;
+}
+
+ #filterSideBar .panel-body {
+     padding: 0px;
+     padding-left: 10px;
+}
+
+ #filterSideBar .panel .panel-heading {
+    padding: 0px;
+     margin-bottom: 10px;
+     margin-top: 10px;
+}
+
+#filterSideBar .card .checkbox, .card .radio {
+    margin: 0px;
+        padding: 0px;
+}
+
+    #filterSideBar .card {
+        margin: 0px;
+        padding: 0px;
+  }
+     #filterSideBar .card .content {
+    padding: 0px; 
+    margin: 0px;
+}
+     #filterSideBar .card-plain .content {
+    padding: 0px; 
+    margin: 0px;
+}
+     
+   #filterSideBar * {
+      color: white !important;
+  }
+/*-- Filter End-- */
+
 
 /*-- Item Start --*/
 #portfolio .portfolio-item:hover {
@@ -10,7 +277,7 @@
 #portfolio .portfolio-item {
     margin-left: 20px;
     margin-bottom: 20px;
-    padding: 0px;
+   padding: 10px;
 }
 
     #portfolio .portfolio-item .portfolio-link {
@@ -82,28 +349,89 @@
 @media (min-width: 767px) {
     #portfolio .portfolio-item {
         margin-left: 20px;
-    margin-bottom: 20px;
+        margin-bottom: 20px;
     }
 }
 
-#portfolio .card .card-image  {
+#portfolio .card .card-image {
     box-shadow: none;
     margin: 0px;
 }
 
 
-
-#portfolio .card:hover  {
-     box-shadow: 5px 0px 40px rgba(0, 0, 0, 0.2);
-  border: 1px solid #F05F40;
+#portfolio .card:hover {
+    box-shadow: 5px 0px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid #F05F40;
 }
 
+#portfolio .btn {
+    margin: 0px;
+    padding: 0px;
+}
+
+#portfolio .product-title {
+    white-space:normal;
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    height: 40px;
+    word-wrap: break-word;
+}
+
+.pagination {
+   
+     margin: 0px ;
+}
 /*-- Item End --*/
 
 /*-- Item Detail Start --*/
 
-.main-product {
-    padding: 0 30px;
+
+
+#productDetailModal .modal-dialog {
+    max-width: 90%;
+    margin-top: 20px; 
+}
+#productDetailModal .modal-header {
+  border-bottom: none;
+  padding-top: 15px;
+  padding-right: 24px;
+  padding-bottom: 0;
+  padding-left: 24px;
+}
+
+.product-detail-link {
+    cursor: pointer;
+}
+
+#productDetailModal .modal-content .modal-body {
+    padding: 0px 20px;
+}
+
+#productDetailModal h2, .h2 {
+     font-size: 2em; 
+}
+
+#productDetailModal h2.title {
+    margin: 0px;
+}
+
+#productDetailModal h3, .h3 {
+    margin: 0px;
+    margin-top: 20px;
+}
+#productDetailModal .panel .panel-heading {
+    padding: 0px;
+    margin-top: 20px;
+}
+
+#productDetailModal .panel-body {
+    padding: 0px;
+    margin-top: 10px;
+}
+#productDetailModal .panel-body p {
+    margin: 0px;
 }
 
 /*-- Item Detail End --*/
@@ -115,12 +443,12 @@
 /*-- Footer Start --*/
 
 footer {
-    padding: 25px 0;
+    padding: 10px 0;
     text-align: center;
 }
 
     footer span.copyright {
-        line-height: 40px;
+        line-height: 30px;
         font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
         text-transform: uppercase;
         text-transform: none;
@@ -128,24 +456,24 @@ footer {
 
     footer ul.quicklinks {
         margin-bottom: 0;
-        line-height: 40px;
+        line-height:30px;
         font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
         text-transform: uppercase;
         text-transform: none;
     }
 
-ul.social-buttons {
+footer ul.social-buttons {
     margin-bottom: 0;
 }
 
-    ul.social-buttons li a {
+   footer ul.social-buttons li a {
         display: block;
         background-color: #222222;
         height: 40px;
         width: 40px;
         border-radius: 100%;
         font-size: 20px;
-        line-height: 40px;
+        line-height: 30px;
         color: white;
         outline: none;
         -webkit-transition: all 0.3s;
@@ -153,10 +481,14 @@ ul.social-buttons {
         transition: all 0.3s;
     }
 
-        ul.social-buttons li a:hover,
-        ul.social-buttons li a:focus,
-        ul.social-buttons li a:active {
-            background-color: #fed136;
+        footer ul.social-buttons li a:hover,
+       footer ul.social-buttons li a:focus,
+        footer ul.social-buttons li a:active {
+            background-color: #F05F40;
+        }
+
+        footer ul li a {
+            padding: 8px;
         }
 
 /*-- Footer End --*/
@@ -170,12 +502,267 @@ ul.social-buttons {
 /*-- section Start--*/
 
 section {
-    margin-top: 60px;
+    margin-top: 100px;
     margin-bottom: 0px;
     margin-left: 30px;
     margin-right: 30px;
+    padding: 0px;
 }
 
 /*-- section End  --*/
 
 
+/*-- sectionManageOrders Start --*/
+
+#sectionManageOrders .card .card-footer {
+    height: 10%;
+    padding: 0px;
+}
+
+#sectionManageOrders .card {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    color: rgba(0,0,0, 0.87);
+    background: #fff;
+    box-shadow: none;
+    border: #E5E5E5 solid 1px;
+    padding: 20px;
+}
+
+    #sectionManageOrders .card .content {
+        padding: 0px;
+    }
+
+    #sectionManageOrders .card:hover {
+        box-shadow: 5px 0px 40px rgba(0, 0, 0, 0.2);
+        border: 1px solid #F05F40;
+    }
+
+    #sectionManageOrders .panel-heading {
+  background-color: transparent;
+  border-bottom: 0px solid #ddd;
+  padding: 5px;
+}
+
+    #sectionManageOrders .panel-body {
+  border: 0 none;
+  padding: 5px;
+}
+
+#sectionManageOrders .footer {
+  margin-top: 0px;
+  text-transform: uppercase;
+}
+/*-- sectionManageOrders End --*/
+
+
+/*--  Notification Start --*/
+
+
+#notification {
+    position: fixed;
+    top: 20%;
+    right: 0px;
+    width: 30%;
+    z-index: 9999;
+    border-radius: 0px;
+
+}
+
+/*--   Notification End  --*/
+
+
+/*-- Side Bar Start --*/
+
+/* Toggle Styles */
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 250px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 250px;
+    width: 0;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -250px;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #999999;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 250px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        padding: 20px;
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+}
+
+/*-- Side Bar End --*/
+
+/*-- Address Search Start --*/
+
+#addrContainer .addrDiv{
+    display:block;
+    border-radius: 5px;
+    word-wrap: break-word;
+}
+
+
+#addrContainer .addrDiv:hover {
+    color: black;
+    background: lightgray;
+    cursor: pointer;
+
+}
+
+#addrContainer .popover {
+    box-shadow: none;
+    max-width: 800px;
+    border: lightgray solid 1px;
+    margin-top: 0px;
+}
+
+#addrContainer .arrow {
+    display: none;
+}
+/*-- Address Search End --*/
+
+
+/*-- Shopping Cart Modal Start --*/
+
+#cartModal .btn-simple {
+
+  padding: 10px;
+    margin: 0px;
+}
+#cartModal .modal-body {
+
+  padding: 0px;
+    margin-left:30px;
+    margin-right: 30px; 
+}
+
+#table_shopingcart .btn-xs {
+
+  padding: 0px;
+
+}
+#table_shopingcart label {
+
+    margin-left: 5px;
+    margin-right: 5px;
+    color: black;
+
+}
+
+#table_shopingcart td {
+
+    padding-top: 3px;
+    padding-bottom: 0px;
+}
+
+#cartModal .modal-dialog {
+    margin-top: 20px; 
+}
+
+/*-- Shopping Cart Modal End --*/

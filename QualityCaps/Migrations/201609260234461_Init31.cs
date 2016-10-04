@@ -3,7 +3,7 @@ namespace QualityCaps.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitData : DbMigration
+    public partial class Init31 : DbMigration
     {
         public override void Up()
         {

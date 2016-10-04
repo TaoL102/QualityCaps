@@ -7,13 +7,13 @@ namespace QualityCaps.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class InitialCreate : IMigrationMetadata
+    public sealed partial class Init31 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Init31));
         
         string IMigrationMetadata.Id
         {
-            get { return "201609061043472_InitialCreate"; }
+            get { return "201609260234461_Init31"; }
         }
         
         string IMigrationMetadata.Source

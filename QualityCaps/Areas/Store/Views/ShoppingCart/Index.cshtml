@@ -1,210 +1,131 @@
-﻿@using QualityCaps.Models;
+﻿@using System.Globalization
+@using QualityCaps.Models;
 
 @{
-    ViewBag.Title = "Index";
-    var session=ViewBag.Session;
-    if (session == null) {
-        session = new List<ShoppingCartItemViewModel>();
-    }
-
+    List<ShoppingCartItemViewModel> session =ViewBag.Session;
 }
 
-@Scripts.Render("~/bundles/jquery")
+@if (session != null&&session.Count>0)
+{
+    decimal orderSubTotal = session.Sum(p => p.TotalPrice);
+    decimal orderGst = session.Sum(
+            p =>
+                p.TotalPrice *
+                Convert.ToDecimal(p.GstPercentage * 0.01));
+    decimal orderTotal = orderGst + orderSubTotal;
 
-
-
-
-
-
-
-@*Filter*@
-
-
-
-        <div class="table-responsive">
-            <table class="table table-shopping">
-                <thead id="cartTableRowTitle">
-                    <tr >
-                        <th class="text-center"></th>
-                        <th>Product</th>
-                        <th class="text-center">Color</th>
-                        <th class="text-right">Unit Price</th>
-                        <th class="text-center">Qty</th>
-                        <th class="text-right">Total</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="cartTableRows">
+    <div class="table-responsive">
+        <table class="table table-shopping" id="table_shopingcart">
+            <thead id="cartTableRowTitle">
+                <tr>
+                    <th class="text-center"></th>
+                    <th class="text-center">Product</th>
+                    <th class="text-center">Color</th>
+                    <th class="text-right">Unit Price</th>
+                    <th class="text-center">Qty</th>
+                    <th class="text-center">Total</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody id="cartTableRows">
                 @foreach (var item in session)
                 {
-                    <tr id="@item.ProductID@item.ColorID"> 
+                    <tr id="@item.ProductID@item.ColorID">
                         <td>
                             <div class="img-container">
                                 <img src="@Url.Content("~/Images/")@item.ImageUrl" alt="...">
                             </div>
                         </td>
-                        <td >
-                            <a href="@Url.Action("Details", "Store", new { area = "Store", productID = item.ProductID, colorID = item.ColorID })">@item.ProductName</a>
-                            <br/>@item.ProductID
-                            <br/>@item.Category
+                        <td>
+                            <a class="product-detail-link" data-toggle="modal"  data-url="@Url.Action("Details","Store",new {productID = item.ProductID, colorID = item.ColorID,area="Store"})">@item.ProductName</a>
+                            <br />Item #: @item.ProductID
+                            <br />@item.Category
                         </td>
                         <td>
-                           @item.ColorName
+                            @item.ColorName
                         </td>
-                        <td >
-                          &euro;@item.UnitPrice
+                        <td>
+                            @item.UnitPrice.ToString("C2", CultureInfo.CurrentCulture)
                         </td>
-                        <td >
-                           @item.Quantity
-                            <div class="btn-group">
-                                <button class="btn btn-round btn-info btn-xs btn_Dec_Qty" data-content='{"ProductID":"@item.ProductID","ColorID":"@item.ColorID"}'> <i class="material-icons">remove</i> </button>
-                                <button class="btn btn-round btn-info btn-xs btn_Inc_Qty" data-content='{"ProductID":"@item.ProductID","ColorID":"@item.ColorID"}'> <i class="material-icons">add</i> </button>
-                            </div>
+                        <td>
+                            <button class="btn btn-round btn-info btn-xs btn_Inc_Dec_Qty" rel="tooltip" data-placement="top" title="Decrease Quantity" data-id="Dec" data-content='{"ProductID":"@item.ProductID","ColorID":"@item.ColorID"}'> <i class="material-icons">remove</i> </button>
+                            <label id="lbl_Qty_@item.ProductID@item.ColorID"> @item.Quantity</label>
+                            <button class="btn btn-round btn-info btn-xs btn_Inc_Dec_Qty" rel="tooltip" data-placement="top" title="Increase Quantity" data-id="Inc" data-content='{"ProductID":"@item.ProductID","ColorID":"@item.ColorID"}'> <i class="material-icons">add</i> </button>
                         </td>
-                        <td >
-                            <small>&euro;</small>@item.TotalPrice
+                        <td id="td_item_total_@item.ProductID@item.ColorID">
+                            @item.TotalPrice.ToString("C2", CultureInfo.CurrentCulture)
                         </td>
-                        <td class="td-actions">
-                            <button type="button" rel="tooltip" data-placement="left" title="Remove item" class="btn btn-simple btn_Del" data-content='{"ProductID":"@item.ProductID","ColorID":"@item.ColorID"}'>
-                                <i class="material-icons">close</i>
-                            </button>
-                        </td>
+
                     </tr>
                 }
-                </tbody>
-            </table>
+
+            </tbody>
+        </table>
+        <div>
+            <dl class="dl-horizontal">
+                <dt>
+                    Sub Total:
+                </dt>
+
+                <dd id="cart_subtotal">
+                    @orderSubTotal.ToString("C2", CultureInfo.CurrentCulture)
+                </dd>
+
+                <dt>
+                    Gst:
+                </dt>
+
+                <dd id="cart_gst">
+                    @orderGst.ToString("C2", CultureInfo.CurrentCulture)
+                </dd>
+
+                <dt>
+                    Total:
+                </dt>
+
+                <dd id="cart_total">
+                    @orderTotal.ToString("C2", CultureInfo.CurrentCulture)
+                </dd>
+
+
+
+
+            </dl>
+
         </div>
+    </div>
+}
+else
+{
+    <div class="text-center">
+         <p>Shopping cart is empty</p>
+    </div>
+   
+}
 
 
-		          
 <!--                 end tables -->
      
 
 <script type="text/javascript">
     $(function () {
+
         // CLEAR CART button click event
         $("#btn_ClearCart").click(function () {
-            // Shopping cart animation
-            $("#cartTableRows").fadeOut('slow');
-            $("#cartTable").remove("#cartTableRows");
-            $("#cartTableRowTitle").fadeOut('slow');
-            $("#cartTable").remove("#cartTableRowTitle");
-                // Append info:
-                $("#cartTableContainer").prepend("<p>Shopping cart is empty.</p>").fadeIn('slow')
 
             // Use ajax to Handel session data
-            var url = "/ShoppingCart/ClearCart";
-
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                }).done(function (data) {
-                    // Update the shopping cart icon
-                    $("#cartTotalQuantity").text(data);
-
-                    console.log("server connection succeeded. ");
-                }).fail(function () {
-                    console.log("Sorry. Unable to add item to cart due to server connection failure. ");
-                });
-
+            var url = "@Url.Action("ClearCart","ShoppingCart",new {area="Store"})";
+            funClear_Cart_Button_Click(url,this);
 
         });
 
 
-        // DEL button click event
-        $(".btn_Del", this)
-            .click(function() {
-                // Get data content (product id and color id)
-                var dataContent = this.getAttribute('data-content');
-                // Convert to JSON format
-                dataContent = JSON.parse(dataContent)
-
-                var productID = dataContent.ProductID;
-                var colorID = dataContent.ColorID;
-
-                // Fade out current row
-                $("#" + productID + colorID).fadeOut('slow');
-                $("#cartTableRows").remove("#" + productID + colorID);
-
-                // If this is the lase row , fade out table as well
-                if ($("#cartTableRows tr:visible").length == 1) {
-                    $("#cartTableRowTitle").fadeOut('slow');
-                    $("#cartTableRows").remove("#cartTableRowTitle");
-                    $("#cartTable").fadeOut('slow');
-
-                    // Append info:
-                    $("#cartTableContainer").prepend("<p>Shopping cart is empty.</p>").fadeIn('slow')
-                }
-
-                // Use ajax to Handel session data
-                var url = "/ShoppingCart/DeleteItem";
-                if (productID != '' && colorID != '') {
-                    $.ajax({
-                            type: "POST",
-                            url: url,
-                            data: { productID: productID, colorID: colorID },
-                        })
-                        .done(function(data) {
-                            // Return data: the total quantity in cart
-
-                            $("#cartTotalQuantity").text(data);
-                            console.log(data)
-                        })
-                        .fail(function() {
-                            alert("Sorry. Unable to add item to cart due to server connection failure. ");
-                        });
-                }
-
-            });
-
-
-        // INCREMENT QTY button click event
-        $(".btn_Inc_Qty", this)
+        // Inc/Dec button click event
+        $(".btn_Inc_Dec_Qty", this)
             .click(function () {
-                // Get data content (product id and color id)
-                var dataContent = this.getAttribute('data-content');
-                // Convert to JSON format
-                dataContent = JSON.parse(dataContent);
-
-                var productID = dataContent.ProductID;
-                var colorID = dataContent.ColorID;
-
-                // Fade out current row
-                $("#" + productID + colorID).fadeOut('slow');
-                $("#cartTableRows").remove("#" + productID + colorID);
-
-                // If this is the lase row , fade out table as well
-                if ($("#cartTableRows tr:visible").length == 1) {
-                    $("#cartTableRowTitle").fadeOut('slow');
-                    $("#cartTableRows").remove("#cartTableRowTitle");
-                    $("#cartTable").fadeOut('slow');
-
-                    // Append info:
-                    $("#cartTableContainer").prepend("<p>Shopping cart is empty.</p>").fadeIn('slow')
-                }
-
-                // Use ajax to Handel session data
-                var url = "/ShoppingCart/DeleteItem";
-                if (productID != '' && colorID != '') {
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: { productID: productID, colorID: colorID },
-                    })
-                        .done(function (data) {
-                            // Return data: the total quantity in cart
-
-                            $("#cartTotalQuantity").text(data);
-                            console.log(data)
-                        })
-                        .fail(function () {
-                            alert("Sorry. Unable to add item to cart due to server connection failure. ");
-                        });
-                }
-
+                var url = "@Url.Action("ModifyItemQuantity","ShoppingCart",new {area="Store"})";
+                funInc_Dec_Button_Click(url,this);
             });
-
-
     });
 </script>
 

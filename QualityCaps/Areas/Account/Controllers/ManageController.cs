@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -62,18 +65,52 @@ namespace QualityCaps.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.PersonalInfoUpdateSuccess ? "Your personal information has been updated."
                 : "";
 
             var userId = User.Identity.GetUserId();
+            var customer = db.Customers.FirstOrDefault(c => c.AccountID.Equals(userId));
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                Customer= customer
             };
             return View(model);
+        }
+
+        // GET: Customers/ManageAccountInfo/5
+        public ActionResult ManageAccountInfo()
+        {
+            var userId = User.Identity.GetUserId();
+            var customer = db.Customers.FirstOrDefault(c => c.AccountID.Equals(userId)); 
+
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+            return View(customer);
+        }
+
+        // POST: Customers/ManageAccountInfo/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ManageAccountInfo([Bind(Include = "AccountID,CustomerID,LastName,FirstMidName,PhoneHome,PhoneWork,PhoneMobile,Email,Address")] Customer customer)
+        {
+            ManageMessageId? message;
+            if (ModelState.IsValid)
+            {
+                db.Entry(customer).State = EntityState.Modified;
+                db.SaveChanges();
+                message = ManageMessageId.PersonalInfoUpdateSuccess;
+                return RedirectToAction("Index", new { Message = message });
+            }
+            return View(customer);
         }
 
         //
@@ -382,21 +419,28 @@ namespace QualityCaps.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
-            Error
+            Error,
+            PersonalInfoUpdateSuccess
         }
 
         public ActionResult ManageOrders()
         {
+
             // Get current logged in user's ID
             string usrID = User.Identity.GetUserId();
+
             // Get customer ID
-            string customerID = db.Customers.Where(c => c.AccountID.Equals(usrID)).SingleOrDefault().CustomerID;
+            var customer = db.Customers.SingleOrDefault(c => c.AccountID.Equals(usrID));
+            if (customer == null) return null;
+            string customerID = customer.CustomerID;
 
             // Search orders by customer ID
-            var orders = db.Orders.Where(o => o.CustomerID.Equals(customerID));
+            var orders = db.Orders.Where(o => o.CustomerID.Equals(customerID)).OrderByDescending(o=>o.OrderDate);
 
-            return View(orders);
+            return View(orders.ToList());
         }
+
+
 
         #endregion
     }

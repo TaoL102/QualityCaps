@@ -15,13 +15,9 @@ namespace QualityCaps.Models
         public string ColorName { get; set; }
         public string Category { get; set; }
         public decimal UnitPrice { get; set; }
+        public double GstPercentage { get; set; }
 
         public int Quantity { get; set; }
-        public decimal TotalPrice {
-            get
-            {
-                return Convert.ToDecimal( UnitPrice * Quantity);
-            }
-          }
+        public decimal TotalPrice => Convert.ToDecimal( UnitPrice * Quantity);
     }
 }

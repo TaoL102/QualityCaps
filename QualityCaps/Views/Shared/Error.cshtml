@@ -2,8 +2,68 @@
 
 @{
     ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<section>
 
+    <hgroup class="title">
+        <h1 class="error">Error.</h1>
+        <h2 class="error">An error occurred while processing your request.</h2>
+    </hgroup>
+    
+    
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h6 class="panel-title">
+                <a data-toggle="collapse" href="#panel_category">
+                    Check Exception Details
+                    <i class="fa fa-caret-up pull-right"></i>
+                </a>
+            </h6>
+        </div>
+        <div id="panel_category" class="panel-collapse collapse">
+            <div class="panel-body">
+
+                <p>
+                    Controller: @Model.ControllerName
+                </p>
+                <p>
+                    Action: @Model.ActionName
+                </p>
+                <p>
+                    TargetSite: @Model.Exception.TargetSite
+                </p>
+                <p>
+                    Source: @Model.Exception.Source
+                </p>
+                <p>
+                    Message: @Model.Exception.Message
+                </p>
+                <p>
+                    InnerException: @Model.Exception.InnerException
+                </p>
+                <p>
+                    HelpLink: @Model.Exception.HelpLink
+                </p>
+                <p>
+                    HResult: @Model.Exception.HResult
+                </p>
+                <p>
+                    StackTrace: @Model.Exception.StackTrace
+                </p>
+                <p>
+                    Data: @Model.Exception.Data
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+</section>

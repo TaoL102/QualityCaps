@@ -88,7 +88,7 @@ namespace QualityCaps.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OrderID,CustomerID,OrderStatusID,SubTotal,Gst,GrandTotal")] Order order)
+        public ActionResult Edit([Bind(Include = "OrderID,CustomerID,OrderStatusID,OrderDate,SubTotal,Gst,GrandTotal")] Order order)
         {
             if (ModelState.IsValid)
             {

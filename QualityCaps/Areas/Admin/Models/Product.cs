@@ -30,6 +30,8 @@ namespace QualityCaps.Models
         [Column(TypeName = "money")]
         public decimal UnitPrice { get; set; }
 
+        [Required]
+        public double GstPercentage { get; set; }
 
         public string Description { get; set; }
     

@@ -7,13 +7,13 @@ namespace QualityCaps.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class CorrectMisSpellingOfDescription : IMigrationMetadata
+    public sealed partial class Init3 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(CorrectMisSpellingOfDescription));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Init3));
         
         string IMigrationMetadata.Id
         {
-            get { return "201609130246570_CorrectMisSpellingOfDescription"; }
+            get { return "201609260218040_Init3"; }
         }
         
         string IMigrationMetadata.Source
