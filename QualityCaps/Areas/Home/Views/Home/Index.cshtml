@@ -1,113 +1,64 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "Home Page";
 }
 
-<!-- Header Carousel -->
-<div id="myCarousel" class="carousel slide">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
 
-    <!-- Wrapper for slides -->
-    <div class="carousel-inner">
-        <div class="item active">
-            <div class="fill" style="background-image: url('http://static3.fashionbeans.com/wp-content/uploads/2015/01/hat-trends-done.jpg');"></div>
-            <div class="carousel-caption">
-                <h2>NEW ARRIVALS</h2>
-            </div>
-        </div>
-        <div class="item">
-            <div class="fill" style="background-image:url('http://static.fashionbeans.com/wp-content/uploads/2015/01/beaniespring.jpg');"></div>
-            <div class="carousel-caption">
-                <h2>SALE</h2>
-            </div>
-        </div>
-        <div class="item">
-            <div class="fill" style="background-image:url('http://static3.fashionbeans.com/wp-content/uploads/2015/01/hat-trends-done.jpg');"></div>
-            <div class="carousel-caption">
-                <h2>CLEARANCE</h2>
+    <div class="page-header header-filter" data-parallax="active" style="background-image: url('@Url.Content("~/Images/women.jpg")'); transform: translate3d(0px, 0px, 0px); margin-top:70px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2 text-center">
+                    <h1 class="title">Quality Caps</h1>
+                    <h4></h4>
+                    <br>
+                    
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Controls -->
-    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-        <span class="icon-prev"></span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" data-slide="next">
-        <span class="icon-next"></span>
-    </a>
+    <div class="main main-raised">
+        <div class="container">
+
+            <div class="row collections" style="margin-top:30px">
+                <div class="col-md-4">
+                    <a href="@Url.Action("Index","Store",new { chkBoxesCategoryIDs="Category002",area="Store"})">
+                    <div class="card card-background" style="background-image: url('@Url.Content("~/Images/women.jpg") ')">
+                        
+                        <div class="content">
+                            <label class="label label-primary">WOMEN CAP</label>
+                           
+                        </div>
+                    </div>
+                        </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="@Url.Action("Index","Store",new { chkBoxesCategoryIDs="Category001",area="Store"})">
+                        <div class="card card-background" style="background-image: url('@Url.Content("~/Images/men.jpg")')">
+
+                            <div class="content">
+                                <label class="label label-primary">MEN CAP</label>
+
+                            </div>
+                        </div></a>
 </div>
+                <div class="col-md-4">
+                    <a href="@Url.Action("Index","Store",new { chkBoxesCategoryIDs="Category003",area="Store"})">
+                        <div class="card card-background" style="background-image: url('@Url.Content("~/Images/kid.jpg")')">
 
-<section class="bg-primary" id="about">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 text-center">
-                <h2 class="section-heading">We've got what you need!</h2>
-                <hr class="light">
-                <p class="text-faded"></p>
+                            <div class="content">
+                                <label class="label label-primary">KIDS CAP</label>
+
+                            </div>
+                        </div></a>
+</div>
+             
             </div>
+
+
+           
         </div>
     </div>
-</section>
 
-
-
-<section class="no-padding" id="portfolio">
-    <div class="container-fluid">
-        <div class="row no-gutter popup-gallery">
-            <div class="col-lg-4 col-sm-6">
-                <a href="@Url.Action("Index","Store",new {area="Store", chkBoxesCategoryIDs = "Category001" })" class="portfolio-box">
-                    <img src="http://static3.fashionbeans.com/wp-content/uploads/2015/01/hat-trends-done.jpg" class="img-responsive" alt="">
-                    <div class="portfolio-box-caption">
-                        <div class="portfolio-box-caption-content">
-                            <div class="project-category text-faded">
-                                MEN
-                            </div>
-                            <div class="project-name">
-                               
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 col-sm-6">
-                <a href="@Url.Action("Index","Store",new {area="Store", chkBoxesCategoryIDs = "Category002" })" class="portfolio-box">
-                    <img src="http://static3.fashionbeans.com/wp-content/uploads/2015/01/hat-trends-done.jpg" class="img-responsive" alt="">
-                    <div class="portfolio-box-caption">
-                        <div class="portfolio-box-caption-content">
-                            <div class="project-category text-faded">
-                                WOMEN
-                            </div>
-                            <div class="project-name">
-                                
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 col-sm-6">
-                <a href="@Url.Action("Index","Store",new {area="Store", chkBoxesCategoryIDs = "Category003" })" class="portfolio-box">
-                    <img src="http://static3.fashionbeans.com/wp-content/uploads/2015/01/hat-trends-done.jpg" class="img-responsive" alt="">
-                    <div class="portfolio-box-caption">
-                        <div class="portfolio-box-caption-content">
-                            <div class="project-category text-faded">
-                                KID
-                            </div>
-                            <div class="project-name">
-                                
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
+   
 

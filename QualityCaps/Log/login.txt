@@ -1,0 +1,25 @@
+------------------------------------------------
+Login Logged : 15/10/2016 1:52:27 PM
+------------------------------------------------
+User Name: customer@test.com
+Email: customer@test.com
+User ID: 78d58b9e-c575-471c-aadd-79c348add6c1
+Record: Login Successful: Customer Account
+------------------------------------------------
+
+------------------------------------------------
+Login Logged : 15/10/2016 1:55:22 PM
+------------------------------------------------
+User Name: admin@test.com
+Email: admin@test.com
+User ID: ff899145-cd3d-454a-b6df-dae0f1d14b31
+Record: Login Successful: Admin Account
+------------------------------------------------
+------------------------------------------------
+Login Logged : 15/10/2016 10:57:55 PM
+------------------------------------------------
+User Name: admin@test.com
+Email: admin@test.com
+User ID: ff899145-cd3d-454a-b6df-dae0f1d14b31
+Record: Login Successful: Admin Account
+------------------------------------------------

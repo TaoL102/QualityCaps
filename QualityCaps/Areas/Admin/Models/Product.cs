@@ -14,6 +14,7 @@ namespace QualityCaps.Models
 
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Display(Name = "#")]
         public string ProductID { get; set; }
 
         [Required]
@@ -23,16 +24,20 @@ namespace QualityCaps.Models
         public string CategoryID { get; set; }
 
         [Required]
+        [Display(Name = "Product")]
         public string ProductName { get; set; }
 
         [Required]
         [DataType(DataType.Currency)]
         [Column(TypeName = "money")]
+        [Display(Name = "Unit Price")]
         public decimal UnitPrice { get; set; }
 
         [Required]
+        [Display(Name = "GST(%)")]
         public double GstPercentage { get; set; }
 
+        [Display(Name = "Description")]
         public string Description { get; set; }
     
         public virtual Category Category { get; set; }

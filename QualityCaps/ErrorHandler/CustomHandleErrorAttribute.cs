@@ -15,31 +15,7 @@ namespace QualityCaps.ErrorHandler
             return filterContext.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
         }
 
-        public static void WriteErrorToFile(ExceptionContext e)
-        {
-            string logFilePath = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\" + "logErrors.txt";
-
-            // This text is always added, making the file longer over time
-            // if it is not deleted.
-            using (StreamWriter sw = File.AppendText(logFilePath))
-            {
-                sw.WriteLine("------------------------------------------------");
-                sw.WriteLine("Error Logged : " + DateTime.Now.ToString());
-                sw.WriteLine("------------------------------------------------");
-                sw.WriteLine("Controller: " + e.Controller);
-                sw.WriteLine("TargetSite: " + e.Exception.TargetSite);
-                sw.WriteLine("Source: " + e.Exception.Source);
-                sw.WriteLine("Message: " + e.Exception.Message);
-                sw.WriteLine("InnerException: " + e.Exception.InnerException);
-                sw.WriteLine("HelpLink: " + e.Exception.HelpLink);
-                sw.WriteLine("HResult: " + e.Exception.HResult);
-                sw.WriteLine("StackTrace: " + e.Exception.StackTrace);
-                sw.WriteLine("Data: " + e.Exception.Data);
-                sw.WriteLine("------------------------------------------------");
-            }
-
-
-        }
+       
 
         public override void OnException(ExceptionContext filterContext)
         {
@@ -69,9 +45,7 @@ namespace QualityCaps.ErrorHandler
                 base.OnException(filterContext);
 
             }
-
-            // Write error logging code 
-            WriteErrorToFile(filterContext);
+          
 
         }
     }

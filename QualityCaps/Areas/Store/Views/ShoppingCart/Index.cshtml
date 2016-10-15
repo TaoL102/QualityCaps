@@ -47,7 +47,7 @@
                         <td>
                             @item.UnitPrice.ToString("C2", CultureInfo.CurrentCulture)
                         </td>
-                        <td>
+                        <td style="min-width:100px">
                             <button class="btn btn-round btn-info btn-xs btn_Inc_Dec_Qty" rel="tooltip" data-placement="top" title="Decrease Quantity" data-id="Dec" data-content='{"ProductID":"@item.ProductID","ColorID":"@item.ColorID"}'> <i class="material-icons">remove</i> </button>
                             <label id="lbl_Qty_@item.ProductID@item.ColorID"> @item.Quantity</label>
                             <button class="btn btn-round btn-info btn-xs btn_Inc_Dec_Qty" rel="tooltip" data-placement="top" title="Increase Quantity" data-id="Inc" data-content='{"ProductID":"@item.ProductID","ColorID":"@item.ColorID"}'> <i class="material-icons">add</i> </button>

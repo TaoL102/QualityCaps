@@ -18,7 +18,7 @@ namespace QualityCaps.Controllers
         // GET: Orders
         public ActionResult Index()
         {
-            var orders = db.Orders.Include(o => o.Customer).Include(o => o.OrderStatus);
+            var orders = db.Orders.Include(o => o.Customer).Include(o => o.OrderStatus).OrderByDescending(o=>o.OrderDate);
 
 
             return View(orders.ToList());

@@ -19,7 +19,7 @@
                                     <div class="panel-heading">
                                         <h6 class="panel-title">
                                             <a data-toggle="collapse" href="#@item.OrderID">
-                                                @Html.DisplayNameFor(model => model.OrderID) @item.OrderID
+                                                @Html.DisplayNameFor(model => model.OrderID) @item.OrderID.Remove(16)
                                                 <i class="fa fa-caret-up pull-right"></i>
                                             </a>
                                         </h6>
@@ -39,9 +39,9 @@
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                    <a href="@Url.Action("Details", "Store", new {area = "Store", productID = product.ProductID, colorID = product.ColorID})">@product.ProductColor.Product.ProductName</a>
-                                                                    <br />@product.ProductID
-                                                                    <br />@product.ProductColor.Product.Category.CategoryName
+                                                                    <a class="product-detail-link" data-toggle="modal" data-url="@Url.Action("Details","Store",new {productID =product.ProductID, colorID = product.ColorID,area="Store"})">@product.ProductColor.Product.ProductName</a>
+                                                                    <br/>@product.ProductID
+                                                                    <br/>@product.ProductColor.Product.Category.CategoryName
                                                                 </td>
                                                                 <td>
                                                                     @product.ProductColor.Color.ColorName

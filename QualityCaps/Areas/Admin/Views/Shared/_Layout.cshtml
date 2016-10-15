@@ -1,55 +1,25 @@
-﻿@using QualityCaps.Models;
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Quality Caps</title>
-    @Styles.Render("~/bundles/bundleCss")
-    @Styles.Render("~/bundles/bundleCustomizedCSS")
-    @Scripts.Render("~/bundles/bundleModernizr")
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script type="text/javascript">
-        var appInsights = window.appInsights || function (config) {
-            function r(config) { t[config] = function () { var i = arguments; t.queue.push(function () { t[config].apply(t, i) }) } } var t = { config: config }, u = document, e = window, o = "script", s = u.createElement(o), i, f; for (s.src = config.url || "//az416426.vo.msecnd.net/scripts/a/ai.0.js", u.getElementsByTagName(o)[0].parentNode.appendChild(s), t.cookie = u.cookie, t.queue = [], i = ["Event", "Exception", "Metric", "PageView", "Trace", "Ajax"]; i.length;) r("track" + i.pop()); return r("setAuthenticatedUserContext"), r("clearAuthenticatedUserContext"), config.disableExceptionTracking || (i = "onerror", r("_" + i), f = e[i], e[i] = function (config, r, u, e, o) { var s = f && f(config, r, u, e, o); return s !== !0 && t["_" + i](config, r, u, e, o), s }), t
-        }({
-            instrumentationKey: "aa43eacc-9f98-4df4-acec-0c78d129d8dc"
-        });
+<section>
 
-        window.appInsights = appInsights;
-        appInsights.trackPageView();
-    </script>
-</head>
-<body>
-    
     <div id="wrapper">
 
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
-            <ul class="nav nav-sidebar">
-                <li>
-                    <a class="navbar-brand page-scroll" href="@Url.Action("Index", "Home", new {area = "Home"})">
-                        <img class="img-responsive " style="height: 100%" src="@Url.Content("~/Images/logo.png")" />
-                    </a>
-                </li>
-            </ul>
+            <ul class="nav nav-sidebar"></ul>
             <ul class="nav nav-sidebar">
 
-                <li class="active">@Html.ActionLink("Product", "Index", "Products", new {area = "Admin"}, null)</li>
-                <li>@Html.ActionLink("Color", "Index", "Colors", new {area = "Admin"}, null)</li>
-                <li>@Html.ActionLink("Category", "Index", "Categories", new {area = "Admin"}, new {id = "category"})</li>
-                <li>@Html.ActionLink("Supplier", "Index", "Suppliers", new {area = "Admin"}, null)</li>
-                <li>@Html.ActionLink("Product With Colors", "Index", "ProductColors", new {area = "Admin"}, null)</li>
-
-            </ul>
-            <ul class="nav nav-sidebar">
-                <li>@Html.ActionLink("Order Status", "Index", "OrderStatus", new {area = "Admin"}, null)</li>
-                <li>@Html.ActionLink("Change Order Status", "Index", "Orders", new {area = "Admin"}, null)</li>
-            </ul>
-            <ul class="nav nav-sidebar">
-                <li>@Html.ActionLink("Disable User Account", "Index", "Customers", new {area = "Admin"}, null)</li>
-
+                <li class="active">@Html.ActionLink("Manage Products", "Index", "ProductColors", new { area = "Admin" }, null)</li>
+                <li>@Html.ActionLink("Manage Orders", "Index", "Orders", new { area = "Admin" }, null)</li>
+                <li>@Html.ActionLink("Manage Customer Accounts", "Index", "Customers", new { area = "Admin" }, null)</li>
+                <li class="divider"></li>
+                <li>@Html.ActionLink("Product", "Index", "Products", new { area = "Admin" }, null)</li>
+                <li>@Html.ActionLink("Color", "Index", "Colors", new { area = "Admin" }, null)</li>
+                <li>@Html.ActionLink("Category", "Index", "Categories", new { area = "Admin" }, new { id = "category" })</li>
+                <li>@Html.ActionLink("Supplier", "Index", "Suppliers", new { area = "Admin" }, null)</li>
+                <li>@Html.ActionLink("Order Status", "Index", "OrderStatus", new { area = "Admin" }, null)</li>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -59,8 +29,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         @RenderBody()
-                        
-                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+
+
                     </div>
                 </div>
             </div>
@@ -69,52 +39,20 @@
 
     </div>
     <!-- /#wrapper -->
-
-
     <!-- Menu Toggle Script -->
 
-    
 
-
-
-    @Scripts.Render("~/bundles/bundleJquery")
-    @Scripts.Render("~/bundles/bundleBootstrap")
-    @Scripts.Render("~/bundles/bundleCustomizedCSS")
-    @RenderSection("scripts", required: false)
 
     <script>
-    $(function() {
-        $("#menu-toggle").click(function (e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-    })
+        $(function () {
+            $("#menu-toggle").click(function (e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+        })
 
 
     </script>
-</body>
-</html>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</section>

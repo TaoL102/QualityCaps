@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Manage Customers</h2>
 
 
 <table class="table" >
@@ -57,13 +57,21 @@
             @Html.DisplayFor(modelItem => item.ApplicationUser.IsAccDisabled)
         </td>
         <td>
-            @Html.ActionLink("Disable Account", "DisableCustomerAccount", new { id = item.CustomerID })
+           
 
+            @Html.ActionLink("Edit", "Edit", new { id = item.CustomerID}) |
+            @Html.ActionLink("Details", "Details", new { id = item.CustomerID }) |
+            @*@Html.ActionLink("Delete", "Delete", new { id = item.CustomerID})*@
+            @if (item.ApplicationUser.IsAccDisabled)
+            {
+                @Html.ActionLink("Enable Account", "DisableCustomerAccount", new {id = item.CustomerID})
+            }
+            else
+            {
+                @Html.ActionLink("Disable Account", "DisableCustomerAccount", new { id = item.CustomerID })
+            }
+            
 
-            <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switchbtn-DisableAcc">
-                <input type="checkbox" id="switchbtn-DisableAcc" data-id="@item.CustomerID" class="mdl-switch__input" checked>
-                <span class="mdl-switch__label"></span>
-            </label>
 
         </td>
     </tr>

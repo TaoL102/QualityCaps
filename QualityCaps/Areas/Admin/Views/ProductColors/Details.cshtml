@@ -11,21 +11,37 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.ProductID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.ProductName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.ProductName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.Category.CategoryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.Category.CategoryName)
+        </dd>
+        
+        <dt>
             @Html.DisplayNameFor(model => model.Color.ColorName)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Color.ColorName)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Product.SupplierID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Product.SupplierID)
-        </dd>
-
+        
         <dt>
             @Html.DisplayNameFor(model => model.QuantityInStock)
         </dt>
@@ -33,13 +49,38 @@
         <dd>
             @Html.DisplayFor(model => model.QuantityInStock)
         </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.Supplier.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.Supplier.Name)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.UnitPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.UnitPrice)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.GstPercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.GstPercentage)
+        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.ImageUrl)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ImageUrl)
+            <img class="img img-responsive" src="~/Images/@Html.DisplayFor(model => model.ImageUrl)" style="width: 120px;max-height: 160px;" />
+
         </dd>
 
     </dl>
@@ -50,30 +91,7 @@
 </p>
 
 
-@using (Html.BeginForm("Index", "ProductColors", FormMethod.Get))
-{
-    <div class="mdl-cell card-square mdl-card mdl-shadow--2dp  mdl-cell--3-col ">
-        <div class="view overlay hm-white-slight z-depth-0 cap_display_img_small_div">
-            <img src=@Html.DisplayFor(model => model.ImageUrl) alt=@Html.DisplayFor(model => model.Product.ProductName) class="img-fluid cap_display_img_small">
-            <a>
-                <div class="mask"></div>
-            </a>
-        </div>
-        <div class="mdl-card__supporting-text">
-            <!--Title-->
-            <div class="card-title">@Html.DisplayFor(model => model.Product.ProductName)</div>
-            <!--Text-->
-            <div class="card-text">Color: @Html.DropDownList("colorID", "All")</div>
-            <div class="card-text">@Html.DisplayFor(model => model.Product.UnitPrice)</div>
 
-        </div>
-        <div class="mdl-card__actions mdl-card--border">
-            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-               BUY
-            </a>
-        </div>
-    </div>
-}
 
 
 

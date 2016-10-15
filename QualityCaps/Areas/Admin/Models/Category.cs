@@ -17,6 +17,7 @@ namespace QualityCaps.Models
         public string CategoryID { get; set; }
 
         [Required]
+        [Display(Name = "Category")]
         public string CategoryName { get; set; }
     
         public virtual ICollection<Product> Products { get; set; }

@@ -35,7 +35,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
+    <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -254,21 +254,9 @@
     <Compile Include="Areas\Admin\Models\ProductColor.cs" />
     <Compile Include="Areas\Store\Models\ShoppingCartItemViewModel.cs" />
     <Compile Include="Areas\Admin\Models\Supplier.cs" />
-    <Compile Include="Migrations\201609260156088_Init.cs" />
-    <Compile Include="Migrations\201609260156088_Init.Designer.cs">
-      <DependentUpon>201609260156088_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609260206374_Init2.cs" />
-    <Compile Include="Migrations\201609260206374_Init2.Designer.cs">
-      <DependentUpon>201609260206374_Init2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609260218040_Init3.cs" />
-    <Compile Include="Migrations\201609260218040_Init3.Designer.cs">
-      <DependentUpon>201609260218040_Init3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609260234461_Init31.cs" />
-    <Compile Include="Migrations\201609260234461_Init31.Designer.cs">
-      <DependentUpon>201609260234461_Init31.cs</DependentUpon>
+    <Compile Include="Migrations\201610051124089_Init.cs" />
+    <Compile Include="Migrations\201610051124089_Init.Designer.cs">
+      <DependentUpon>201610051124089_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -288,7 +276,12 @@
     <Content Include="Content\PagedList.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Images\33285_f11.jpg" />
+    <Content Include="Images\33285_f3.jpg" />
+    <Content Include="Images\33285_f54.jpg" />
+    <Content Include="Images\33285_f84.jpg" />
     <Content Include="Images\34192_f15.jpg" />
+    <Content Include="Images\36032_f2.jpg" />
     <Content Include="Images\36136_f4.jpg" />
     <Content Include="Images\37588_f2.jpg" />
     <Content Include="Images\37588_f3.jpg" />
@@ -296,15 +289,37 @@
     <Content Include="Images\38041p.jpg" />
     <Content Include="Images\42647_f4.jpg" />
     <Content Include="Images\42679_f15.jpg" />
+    <Content Include="Images\43122_7f3.jpg" />
+    <Content Include="Images\43122_7f4.jpg" />
     <Content Include="Images\43334_f15.jpg" />
     <Content Include="Images\44066_f13.jpg" />
     <Content Include="Images\44066_f2.jpg" />
     <Content Include="Images\44066_f4.jpg" />
     <Content Include="Images\44098_f11.jpg" />
     <Content Include="Images\44098_f4.jpg" />
+    <Content Include="Images\44484_f2.jpg" />
+    <Content Include="Images\45034_f2.jpg" />
+    <Content Include="Images\45034_f25.jpg" />
+    <Content Include="Images\45374_f13.jpg" />
+    <Content Include="Images\45648_f16.jpg" />
+    <Content Include="Images\45648_f2.jpg" />
+    <Content Include="Images\45648_f3.jpg" />
+    <Content Include="Images\45685_f13.jpg" />
+    <Content Include="Images\45685_f2.jpg" />
+    <Content Include="Images\45685_f3.jpg" />
+    <Content Include="Images\46336_f15.jpg" />
+    <Content Include="Images\46336_f39.jpg" />
+    <Content Include="Images\46336_f54.jpg" />
     <Content Include="Images\46411_f13.jpg" />
+    <Content Include="Images\70886_f3.jpg" />
+    <Content Include="Images\70886_f39.jpg" />
+    <Content Include="Images\70886_f54.jpg" />
+    <Content Include="Images\image_placeholder.jpg" />
+    <Content Include="Images\kid.jpg" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\logo.svg" />
+    <Content Include="Images\women.jpg" />
+    <Content Include="Images\men.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\creative.js" />
@@ -483,7 +498,6 @@
     <Content Include="Areas\Admin\Views\OrderStatus\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\OrderStatus\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\OrderStatus\Index.cshtml" />
-    <Content Include="Areas\Store\Views\CheckOut\Confirm.cshtml" />
     <Content Include="Areas\Admin\Views\Orders\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Orders\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Orders\Index.cshtml" />
@@ -494,6 +508,8 @@
     <Folder Include="Areas\Home\Models\" />
     <Folder Include="Areas\Home\Views\Shared\" />
     <Folder Include="Areas\Store\Views\Shared\" />
+    <Folder Include="Log\" />
+    <Folder Include="obj\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -506,17 +522,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201609260156088_Init.resx">
-      <DependentUpon>201609260156088_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609260206374_Init2.resx">
-      <DependentUpon>201609260206374_Init2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609260218040_Init3.resx">
-      <DependentUpon>201609260218040_Init3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609260234461_Init31.resx">
-      <DependentUpon>201609260234461_Init31.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610051124089_Init.resx">
+      <DependentUpon>201610051124089_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

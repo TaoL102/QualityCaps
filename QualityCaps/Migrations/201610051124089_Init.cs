@@ -83,6 +83,7 @@ namespace QualityCaps.Migrations
                         OrderStatusID = c.String(nullable: false, maxLength: 128),
                         OrderDate = c.DateTime(nullable: false),
                         SubTotal = c.Decimal(nullable: false, storeType: "money"),
+                        Gst = c.Decimal(nullable: false, storeType: "money"),
                         GrandTotal = c.Decimal(nullable: false, storeType: "money"),
                     })
                 .PrimaryKey(t => t.OrderID)
@@ -144,7 +145,7 @@ namespace QualityCaps.Migrations
                 .Index(t => t.UserId);
             
             CreateTable(
-                "dbo.AspNetUserLogins",
+                "dbo.ExternalLoginAccounts",
                 c => new
                     {
                         LoginProvider = c.String(nullable: false, maxLength: 128),
@@ -156,7 +157,7 @@ namespace QualityCaps.Migrations
                 .Index(t => t.UserId);
             
             CreateTable(
-                "dbo.AspNetUserRoles",
+                "dbo.AccountRoles",
                 c => new
                     {
                         UserId = c.String(nullable: false, maxLength: 128),
@@ -164,7 +165,7 @@ namespace QualityCaps.Migrations
                     })
                 .PrimaryKey(t => new { t.UserId, t.RoleId })
                 .ForeignKey("dbo.Accounts", t => t.UserId, cascadeDelete: true)
-                .ForeignKey("dbo.AccountRoles", t => t.RoleId, cascadeDelete: true)
+                .ForeignKey("dbo.Roles", t => t.RoleId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
             
@@ -191,20 +192,20 @@ namespace QualityCaps.Migrations
                 .PrimaryKey(t => t.SupplierID);
             
             CreateTable(
-                "dbo.AccountRoles",
+                "dbo.Roles",
                 c => new
                     {
-                        Id = c.String(nullable: false, maxLength: 128),
+                        RoleID = c.String(nullable: false, maxLength: 128),
                         Name = c.String(nullable: false, maxLength: 256),
                     })
-                .PrimaryKey(t => t.Id)
+                .PrimaryKey(t => t.RoleID)
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
             
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AccountRoles");
+            DropForeignKey("dbo.AccountRoles", "RoleId", "dbo.Roles");
             DropForeignKey("dbo.Products", "SupplierID", "dbo.Suppliers");
             DropForeignKey("dbo.ProductColors", "ProductID", "dbo.Products");
             DropForeignKey("dbo.OrderProducts", new[] { "ProductID", "ColorID" }, "dbo.ProductColors");
@@ -212,15 +213,15 @@ namespace QualityCaps.Migrations
             DropForeignKey("dbo.OrderProducts", "OrderID", "dbo.Orders");
             DropForeignKey("dbo.Orders", "CustomerID", "dbo.Customers");
             DropForeignKey("dbo.Customers", "AccountID", "dbo.Accounts");
-            DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.Accounts");
-            DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.Accounts");
+            DropForeignKey("dbo.AccountRoles", "UserId", "dbo.Accounts");
+            DropForeignKey("dbo.ExternalLoginAccounts", "UserId", "dbo.Accounts");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.Accounts");
             DropForeignKey("dbo.ProductColors", "ColorID", "dbo.Colors");
             DropForeignKey("dbo.Products", "CategoryID", "dbo.Categories");
-            DropIndex("dbo.AccountRoles", "RoleNameIndex");
-            DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
-            DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
-            DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
+            DropIndex("dbo.Roles", "RoleNameIndex");
+            DropIndex("dbo.AccountRoles", new[] { "RoleId" });
+            DropIndex("dbo.AccountRoles", new[] { "UserId" });
+            DropIndex("dbo.ExternalLoginAccounts", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.Accounts", "UserNameIndex");
             DropIndex("dbo.Customers", new[] { "AccountID" });
@@ -232,11 +233,11 @@ namespace QualityCaps.Migrations
             DropIndex("dbo.ProductColors", new[] { "ProductID" });
             DropIndex("dbo.Products", new[] { "CategoryID" });
             DropIndex("dbo.Products", new[] { "SupplierID" });
-            DropTable("dbo.AccountRoles");
+            DropTable("dbo.Roles");
             DropTable("dbo.Suppliers");
             DropTable("dbo.OrderStatus");
-            DropTable("dbo.AspNetUserRoles");
-            DropTable("dbo.AspNetUserLogins");
+            DropTable("dbo.AccountRoles");
+            DropTable("dbo.ExternalLoginAccounts");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.Accounts");
             DropTable("dbo.Customers");

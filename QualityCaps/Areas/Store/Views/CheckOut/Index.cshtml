@@ -7,10 +7,14 @@
 }
 
 
-<div>
+<section>
+@using (Html.BeginForm("Confirm","CheckOut",FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
     <h4>Order</h4>
-    <hr />
+    <hr/>
     <h5>Shipping Infomation</h5>
+    @Html.HiddenFor(model => model.Customer.CustomerID)
 
     <div class="col-md-12">
         <dl class="dl-horizontal">
@@ -20,7 +24,7 @@
 
             <dd>
                 @Html.DisplayFor(model => model.Customer.FullName)
-            </dd>        
+            </dd>
 
             <dt>
                 @Html.DisplayNameFor(model => model.Customer.Address)
@@ -29,7 +33,7 @@
             <dd>
                 @Html.DisplayFor(model => model.Customer.Address)
             </dd>
-            
+
             <dt>
                 @Html.DisplayNameFor(model => model.Customer.PhoneHome)
             </dt>
@@ -53,24 +57,21 @@
             <dd>
                 @Html.DisplayFor(model => model.Customer.PhoneMobile)
             </dd>
-
-
-
         </dl>
     </div>
-    <hr />
+
+
     <h5>Shopping Cart</h5>
-        <div class="col-md-12">
+    <div class="col-md-12">
 
-            @Html.Partial("~/Areas/Store/Views/ShoppingCart/Index.cshtml")
-        </div>
-
-        <div>
-            <button id="btn-Checkout">@Html.ActionLink("CHECK OUT", "Confirm", "CheckOut", null, null)</button>
-
-        </div>
-
-</div>
-<p>
-    
-</p>
+        @Html.Partial("~/Areas/Store/Views/ShoppingCart/Index.cshtml")
+        @Html.HiddenFor(model => model.OrderProducts)
+    </div>
+    <div class="col-md-12">
+        <hr/>
+    </div>
+    <div>
+        <input type="submit" value="CONFIRM TO CHECK OUT" class="btn btn-info" />
+    </div>
+}
+</section>

@@ -18,6 +18,7 @@ namespace QualityCaps.Models
         public string OrderStatusID { get; set; }
 
         [Required]
+        [Display(Name = "Shipping Status")]
         public string StatusName { get; set; }
 
     }

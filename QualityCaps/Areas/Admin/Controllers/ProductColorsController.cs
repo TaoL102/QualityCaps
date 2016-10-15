@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mime;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using QualityCaps.Models;
+using WebGrease.Activities;
 
 namespace QualityCaps.Controllers
 {
@@ -27,7 +31,7 @@ namespace QualityCaps.Controllers
         //}
 
         // GET: Search for Products based on category & color
-        public ActionResult Index(string search,string categoryID,string colorID)
+        public ActionResult Index(string search, string categoryID, string colorID)
         {
             var productColors = db.ProductColors.Include(p => p.Color).Include(p => p.Product);
 
@@ -35,13 +39,13 @@ namespace QualityCaps.Controllers
             var categoryList = new List<Category>();
             var categoryQry = from p in productColors orderby p.Product.CategoryID select p.Product.Category;
             categoryList.AddRange(categoryQry.Distinct());
-            ViewBag.categoryID = new SelectList(categoryList,"CategoryID","CategoryName");
+            ViewBag.categoryID = new SelectList(categoryList, "CategoryID", "CategoryName");
 
             // Color List
             var colorList = new List<Color>();
             var colorQry = from p in productColors orderby p.ColorID select p.Color;
             colorList.AddRange(colorQry.Distinct());
-            ViewBag.colorID = new SelectList(colorList,"ColorID","ColorName");
+            ViewBag.colorID = new SelectList(colorList, "ColorID", "ColorName");
 
 
             // Search 
@@ -51,7 +55,7 @@ namespace QualityCaps.Controllers
             }
             if (!String.IsNullOrEmpty(categoryID))
             {
-                productColors = productColors.Where(p=>p.Product.CategoryID.Equals(categoryID));
+                productColors = productColors.Where(p => p.Product.CategoryID.Equals(categoryID));
             }
 
             if (!String.IsNullOrEmpty(colorID))
@@ -62,9 +66,9 @@ namespace QualityCaps.Controllers
         }
 
         // GET: ProductColors/Details/5
-        public ActionResult Details(string productID,string colorID)
+        public ActionResult Details(string productID, string colorID)
         {
-            if (productID == null|| colorID==null)
+            if (productID == null || colorID == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -90,7 +94,7 @@ namespace QualityCaps.Controllers
         public ActionResult Create()
         {
             ViewBag.ColorID = new SelectList(db.Colors, "ColorID", "ColorName");
-            ViewBag.ProductID = new SelectList(db.Products, "ProductID", "SupplierID");
+            ViewBag.ProductID = new SelectList(db.Products, "ProductID", "ProductID");
             return View();
         }
 
@@ -99,17 +103,33 @@ namespace QualityCaps.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProductID,ColorID,QuantityInStock,ImageUrl")] ProductColor productColor)
+        public ActionResult Create([Bind(Include = "ProductID,ColorID,QuantityInStock,ImageUrl")] ProductColor productColor, HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
             {
-                db.ProductColors.Add(productColor);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                // Save picture to image folder
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    // Check file type
+                    if (IsImage(upload))
+                    {                    
+                        // filename
+                    string fileName = Path.GetFileName(upload.FileName);
+                        var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+                        upload.SaveAs(path);
+
+                        // Save to database
+                        productColor.ImageUrl = fileName;
+                        db.ProductColors.Add(productColor);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                }
+
             }
 
             ViewBag.ColorID = new SelectList(db.Colors, "ColorID", "ColorName", productColor.ColorID);
-            ViewBag.ProductID = new SelectList(db.Products, "ProductID", "SupplierID", productColor.ProductID);
+            ViewBag.ProductID = new SelectList(db.Products, "ProductID", "ProductID", productColor.ProductID);
             return View(productColor);
         }
 
@@ -126,7 +146,7 @@ namespace QualityCaps.Controllers
                 return HttpNotFound();
             }
             ViewBag.ColorID = new SelectList(db.Colors, "ColorID", "ColorName", productColor.ColorID);
-            ViewBag.ProductID = new SelectList(db.Products, "ProductID", "SupplierID", productColor.ProductID);
+            ViewBag.ProductID = new SelectList(db.Products, "ProductID", "ProductID", productColor.ProductID);
             return View(productColor);
         }
 
@@ -135,16 +155,34 @@ namespace QualityCaps.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductID,ColorID,QuantityInStock,ImageUrl")] ProductColor productColor)
+        public ActionResult Edit([Bind(Include = "ProductID,ColorID,QuantityInStock,ImageUrl")] ProductColor productColor, HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(productColor).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                // Save picture to image folder
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    // Check file type
+                    if (IsImage(upload))
+                    {
+                        // filename
+                        string fileName = Path.GetFileName(upload.FileName);
+                        var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+                        upload.SaveAs(path);
+
+                        // Save to database
+                        productColor.ImageUrl = fileName;
+                        db.Entry(productColor).State = EntityState.Modified;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                }
+
+
+               
             }
             ViewBag.ColorID = new SelectList(db.Colors, "ColorID", "ColorName", productColor.ColorID);
-            ViewBag.ProductID = new SelectList(db.Products, "ProductID", "SupplierID", productColor.ProductID);
+            ViewBag.ProductID = new SelectList(db.Products, "ProductID", "ProductID", productColor.ProductID);
             return View(productColor);
         }
 
@@ -181,6 +219,82 @@ namespace QualityCaps.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public const int ImageMinimumBytes = 512;
+
+        public static bool IsImage(HttpPostedFileBase postedFile)
+        {
+            //-------------------------------------------
+            //  Check the image mime types
+            //-------------------------------------------
+            if (postedFile.ContentType.ToLower() != "image/jpg" &&
+                        postedFile.ContentType.ToLower() != "image/jpeg" &&
+                        postedFile.ContentType.ToLower() != "image/pjpeg" &&
+                        postedFile.ContentType.ToLower() != "image/gif" &&
+                        postedFile.ContentType.ToLower() != "image/x-png" &&
+                        postedFile.ContentType.ToLower() != "image/png")
+            {
+                return false;
+            }
+
+            //-------------------------------------------
+            //  Check the image extension
+            //-------------------------------------------
+            if (Path.GetExtension(postedFile.FileName).ToLower() != ".jpg"
+                && Path.GetExtension(postedFile.FileName).ToLower() != ".png"
+                && Path.GetExtension(postedFile.FileName).ToLower() != ".gif"
+                && Path.GetExtension(postedFile.FileName).ToLower() != ".jpeg")
+            {
+                return false;
+            }
+
+            //-------------------------------------------
+            //  Attempt to read the file and check the first bytes
+            //-------------------------------------------
+            try
+            {
+                if (!postedFile.InputStream.CanRead)
+                {
+                    return false;
+                }
+
+                if (postedFile.ContentLength < ImageMinimumBytes)
+                {
+                    return false;
+                }
+
+                byte[] buffer = new byte[512];
+                postedFile.InputStream.Read(buffer, 0, 512);
+                string content = System.Text.Encoding.UTF8.GetString(buffer);
+                if (Regex.IsMatch(content, @"<script|<html|<head|<title|<body|<pre|<table|<a\s+href|<img|<plaintext|<cross\-domain\-policy",
+                    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline))
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            //-------------------------------------------
+            //  Try to instantiate new Bitmap, if .NET will throw exception
+            //  we can assume that it's not a valid image
+            //-------------------------------------------
+
+            try
+            {
+                using (var bitmap = new System.Drawing.Bitmap(postedFile.InputStream))
+                {
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

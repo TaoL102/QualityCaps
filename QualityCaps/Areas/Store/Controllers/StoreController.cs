@@ -17,16 +17,6 @@ namespace QualityCaps.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Search for Products based on name
-        //public ActionResult Index(string search)
-        //{
-        //    var productColors = db.ProductColors.Include(p => p.Color).Include(p => p.Product);
-        //    if (!String.IsNullOrEmpty(search))
-        //    {
-        //        productColors = productColors.Where(s => s.Product.ProductName.Contains(search));
-        //    }
-        //    return View(productColors.ToList());
-        //}
 
         // GET: Search for Products based on category & color
         public ActionResult Index(string search, string[] chkBoxesCategoryIDs, string[] chkBoxesColorIDs, string[] chkBoxesSupplierIDs, int? page)
@@ -79,7 +69,7 @@ namespace QualityCaps.Controllers
             ViewBag.chkBoxesColorIDs = chkBoxesColorIDs ?? new string[0];
             ViewBag.chkBoxesSupplierIDs = chkBoxesSupplierIDs ?? new string[0];
 
-            int pageSize = 4;
+            int pageSize = 9;
 
             int pageNumber = (page ?? 1);
 

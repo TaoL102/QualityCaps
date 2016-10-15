@@ -24,7 +24,6 @@ namespace QualityCaps.Models
         public string CustomerID { get; set; }
 
         [Required]
-        [Display(Name = "Shipping Status")]
         public string OrderStatusID { get; set; }
 
         [Required]
@@ -40,7 +39,7 @@ namespace QualityCaps.Models
         [Required]
         [DataType(DataType.Currency)]
         [Column(TypeName = "money")]
-        [Display(Name = "GST")]
+        [Display(Name = "GST(%)")]
         public decimal Gst { get; set; }
 
         [Required]

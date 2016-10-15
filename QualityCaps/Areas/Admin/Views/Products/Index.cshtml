@@ -1,30 +1,35 @@
 ﻿@model IEnumerable<QualityCaps.Models.Product>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Manage Products";
 }
 
-<h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Add New Product", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Category.CategoryName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Supplier.Name)
+            @Html.DisplayNameFor(model => model.ProductID)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ProductName)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Category.CategoryName)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.UnitPrice)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Discription)
+            @Html.DisplayNameFor(model => model.GstPercentage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Supplier.Name)
         </th>
         <th></th>
     </tr>
@@ -32,19 +37,25 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Category.CategoryName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Supplier.Name)
+            @Html.DisplayFor(modelItem => item.ProductID)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ProductName)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Supplier.Name)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.UnitPrice)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Discription)
+            @Html.DisplayFor(modelItem => item.GstPercentage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Supplier.Name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ProductID }) |

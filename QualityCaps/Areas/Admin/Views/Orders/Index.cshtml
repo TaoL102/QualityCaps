@@ -9,14 +9,15 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.OrderID)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Customer.Email)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OrderStatus.StatusName)
-        </th>
+
         <th>
             @Html.DisplayNameFor(model => model.SubTotal)
         </th>
@@ -26,23 +27,24 @@
         <th>
             @Html.DisplayNameFor(model => model.GrandTotal)
         </th>
-        <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderStatus.StatusName)
+        </th>
     </tr>
 
 @foreach (var item in Model) {
 
     <tr>
-        <td>@Html.ActionLink((item.OrderID), "Details", new { id = item.OrderID }) 
-            
+        <td>
+            @Html.DisplayFor(modelItem => item.OrderDate)
+        </td>
+        <td>@Html.ActionLink((item.OrderID), "Details", new {id = item.OrderID})
+
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Customer.Email)
         </td>
-        <td>
 
-            @Html.DisplayFor(modelItem => item.OrderStatus.StatusName) |  
-            @Html.ActionLink("Change Status", "Edit", new { id = item.OrderID }) 
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.SubTotal)
         </td>
@@ -53,7 +55,9 @@
             @Html.DisplayFor(modelItem => item.GrandTotal)
         </td>
         <td>
-           
+
+            @Html.DisplayFor(modelItem => item.OrderStatus.StatusName) |
+            @Html.ActionLink("Change Status", "Edit", new {id = item.OrderID})
         </td>
     </tr>
 }

@@ -27,19 +27,43 @@ html  {
 
 a {
      box-shadow: none !important;
+
 }
+
+li a:hover,
+li a:focus,
+li a.focus,
+li a:active,
+li a.active,
+li a:active:focus,
+li a:active:hover
+{
+     color: #F05F40 !important;
+ background-color: #eee !important;
+}
+
 
 hr {
     margin: 0px;
     border: 0;
     border-top: 1px solid #eee;
+    display: block;
 }
+
 /* -- ALL --*/
 
 /* -- Nav Start --*/
 
 .navbar .btn {
     margin: 0px !important;
+}
+
+.navbar-brand svg {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+     display: block;
 }
 
 /* -- Nav Start --*/
@@ -187,6 +211,33 @@ hr {
 }
 /*-- Login End--*/
 
+/*-- Home page start--*/
+.header-filter:before, .header-filter:after {
+
+   content:none; 
+}
+
+.card-background:after {
+
+   background-color: rgba(255, 255, 255, .15)
+
+}
+
+.card-background:hover {
+    /*box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);*/
+    border: 1px solid #F05F40;
+}
+
+.card-background .content {
+
+    padding-top: 200px;
+     padding-bottom:30px; 
+
+}
+
+/*-- HOme page end--*/
+
+
 /*-- Filter Start-- */
 
 
@@ -277,7 +328,7 @@ overflow: auto;
 #portfolio .portfolio-item {
     margin-left: 20px;
     margin-bottom: 20px;
-   padding: 10px;
+   /*padding: 10px;*/
 }
 
     #portfolio .portfolio-item .portfolio-link {
@@ -348,8 +399,8 @@ overflow: auto;
 
 @media (min-width: 767px) {
     #portfolio .portfolio-item {
-        margin-left: 20px;
-        margin-bottom: 20px;
+        /*margin-left: 20px;*/
+        /*margin-bottom: 20px;*/
     }
 }
 
@@ -743,8 +794,9 @@ section {
 }
 
 #table_shopingcart .btn-xs {
-
-  padding: 0px;
+    border-radius: 30px;
+      margin: 0px !important; 
+     padding: 5px !important; 
 
 }
 #table_shopingcart label {
@@ -766,3 +818,19 @@ section {
 }
 
 /*-- Shopping Cart Modal End --*/
+
+
+/*-- Uploader Start --*/
+
+.form-group input[type=file] {
+         opacity:1; 
+     position:unset; 
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/*-- Uploader Start --*/

@@ -16,7 +16,7 @@
 
             @using (Html.BeginForm("LogOff", "Account", new { area = "Account" }, FormMethod.Post, new { id = "logoutForm" }))
             {
-            @Html.AntiForgeryToken()
+                @Html.AntiForgeryToken()
             }
             <li>
                 @Html.ActionLink("Your Account", "Index", "Manage", new { area = "Account" }, new { title = "Manage" })
@@ -24,10 +24,11 @@
             <li>
                 @Html.ActionLink("Your Orders", "ManageOrders", "Manage", new { area = "Account" }, new { title = "Manage Orders" })
             </li>
-            <li class="divider"></li>
+
             @if (User.IsInRole("Admin"))
             {
-            <li>@Html.ActionLink("Admin", "Index", "Admin", new { area = "Admin" }, null)</li>
+                <li class="divider"></li>
+                <li>@Html.ActionLink("Admin", "Index", "Admin", new { area = "Admin" }, null)</li>
             }
             <li class="divider"></li>
             <li>  <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
@@ -37,7 +38,7 @@
 }
 else
 {
-            <li>    @Html.ActionLink("Log in / Register", "Login", "Account", new { area = "Account" }, new { id = "loginLink" })</li>
+    <li>    @Html.ActionLink("Log in / Register", "Login", "Account", new { area = "Account" }, new { id = "loginLink" })</li>
 
 }
 

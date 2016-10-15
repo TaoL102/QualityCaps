@@ -16,6 +16,7 @@ namespace QualityCaps.Models
         }
         [Key, Column(Order = 0)]
         [Required]
+        [Display(Name = "#")]
         public string ProductID { get; set; }
 
         [Key, Column(Order = 1)]
@@ -24,9 +25,10 @@ namespace QualityCaps.Models
 
         [Required]
         [Range(0,int.MaxValue)]
+        [Display(Name = "Stock")]
         public int QuantityInStock { get; set; }
 
-
+        [Display(Name = "Picture")]
         public string ImageUrl { get; set; }
     
         public virtual Color Color { get; set; }

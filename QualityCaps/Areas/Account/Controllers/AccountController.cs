@@ -13,6 +13,7 @@ using Microsoft.Owin.Security;
 using QualityCaps.Models;
 using System.Web.Security;
 using Facebook;
+using System.IO;
 
 namespace QualityCaps.Controllers
 {
@@ -27,7 +28,7 @@ namespace QualityCaps.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -39,9 +40,9 @@ namespace QualityCaps.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -82,7 +83,7 @@ namespace QualityCaps.Controllers
                 return View(model);
             }
 
-            
+
             // shouldLockout set to true: enable password failures to trigger account lockout
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: true);
             switch (result)
@@ -90,7 +91,8 @@ namespace QualityCaps.Controllers
                 case SignInStatus.Success:
                     // Check if this account is enabled (Administrator can disable users from logging in)
                     // Get current user's isEnable property
-                    bool isAccDisabled = UserManager.FindByEmail(model.Email).IsAccDisabled;
+                    ApplicationUser curUser = UserManager.FindByEmail(model.Email);
+                    bool isAccDisabled = curUser.IsAccDisabled;
 
                     // Check user's role                   
                     bool isAdminRole = UserManager.GetRoles(UserManager.FindByEmail(model.Email).Id).Contains("Admin");
@@ -98,15 +100,22 @@ namespace QualityCaps.Controllers
                     // If this user's account is disabled, redirect to AccDisabled page, login failed
                     if (isAccDisabled)
                     {
+                        // Record to log file
+                        WriteLogInLogToFile(curUser, "Login Failed: Account is disabled");
                         LogOff();
                         return View("AccDisabled");
                     }
 
                     // If user's role is admin , redirect to the Admin page
-                    if (isAdminRole) {
+                    if (isAdminRole)
+                    {
+                        // Record to log file
+                        WriteLogInLogToFile(curUser, "Login Successful: Admin Account");
                         return RedirectToAction("index", "Admin", new { area = "Admin" });
                     }
 
+                    // Record to log file
+                    WriteLogInLogToFile(curUser, "Login Successful: Customer Account");
                     //return RedirectToLocal(returnUrl);
                     return RedirectToAction("Index", "Manage");
                 case SignInStatus.LockedOut:
@@ -118,6 +127,36 @@ namespace QualityCaps.Controllers
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
+        }
+
+        public static void WriteLogInLogToFile(ApplicationUser user, string message)
+        {
+            string logFilePath = AppDomain.CurrentDomain.BaseDirectory + "Log\\" + "login.txt";
+
+            // Determine whether the directory exists.
+            if (!Directory.Exists(logFilePath))
+            {
+                // Try to create the directory.               
+                Directory.CreateDirectory(Path.GetDirectoryName(logFilePath));
+                
+            }
+
+
+            // This text is always added, making the file longer over time
+            // if it is not deleted.
+            using (StreamWriter sw = System.IO.File.AppendText(logFilePath))
+            {
+                sw.WriteLine("------------------------------------------------");
+                sw.WriteLine("Login Logged : " + DateTime.Now.ToString());
+                sw.WriteLine("------------------------------------------------");
+                sw.WriteLine("User Name: " + user.UserName);
+                sw.WriteLine("Email: " + user.Email);
+                sw.WriteLine("User ID: " + user.Id);
+                sw.WriteLine("Record: " + message);
+                sw.WriteLine("------------------------------------------------");
+            }
+
+
         }
 
         //
@@ -149,11 +188,11 @@ namespace QualityCaps.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
-                  
+
                     return RedirectToLocal(model.ReturnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -165,8 +204,8 @@ namespace QualityCaps.Controllers
         }
 
         public static void SendRegistrationConfirmationEmail(
-            string userName="",
-            string password="",
+            string userName = "",
+            string password = "",
             string toMail = ""
         , string ccMail = ""
         , string bccMail = "")
@@ -187,12 +226,12 @@ namespace QualityCaps.Controllers
             {
                 message.Bcc.Add(new MailAddress(bccMail));
             }
-            message.Subject = "Registration Confirmation (Quanlity Caps)";
+            message.Subject = "Registration Confirmation (Quality Caps)";
             StringBuilder sb = new StringBuilder();
             sb.Append("-------------------------------------------------\n");
-            sb.Append("User Name: " + userName+"\n");
+            sb.Append("User Name: " + userName + "\n");
             sb.Append("-------------------------------------------------\n");
-            sb.Append("Password : "+password+"\n");
+            sb.Append("Password : " + password + "\n");
             sb.Append("-------------------------------------------------\n");
             message.Body = sb.ToString();
 
@@ -219,11 +258,11 @@ namespace QualityCaps.Controllers
             {
 
                 // Save Account Info
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email};
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -246,15 +285,15 @@ namespace QualityCaps.Controllers
                         FirstMidName = model.FirstMidName,
                     };
                     db.Customers.Add(customer);
-                    db.SaveChanges();         
+                    db.SaveChanges();
 
-                     //Assign Role to user Here      
+                    //Assign Role to user Here      
                     await this.UserManager.AddToRoleAsync(user.Id, "Customer");
 
                     // Send confirmation Email
                     SendRegistrationConfirmationEmail(model.Email, model.Password, model.Email, null, null);
 
-                    return RedirectToAction("Index", "Home",new { area="Home"});
+                    return RedirectToAction("Index", "Home", new { area = "Home" });
                 }
 
                 AddErrors(result);
@@ -371,7 +410,7 @@ namespace QualityCaps.Controllers
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { area="Account", ReturnUrl = returnUrl }));
+            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { area = "Account", ReturnUrl = returnUrl }));
         }
 
         //
@@ -450,13 +489,15 @@ namespace QualityCaps.Controllers
                     // And then if successful, sign in this account. 
                     // Find account by email
                     var user = UserManager.FindByEmail(loginInfo.Email);
-                    if (user != null) { 
-                    var addLoginResult = await UserManager.AddLoginAsync(user.Id, loginInfo.Login);
-                    if (addLoginResult.Succeeded)
+                    if (user != null)
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToLocal(returnUrl);
-                    }}
+                        var addLoginResult = await UserManager.AddLoginAsync(user.Id, loginInfo.Login);
+                        if (addLoginResult.Succeeded)
+                        {
+                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            return RedirectToLocal(returnUrl);
+                        }
+                    }
 
 
                     // If the user does not have an account, then prompt the user to create an account

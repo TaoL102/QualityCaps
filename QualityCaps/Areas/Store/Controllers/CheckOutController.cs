@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -13,7 +14,7 @@ using Microsoft.AspNet.Identity;
 namespace QualityCaps.Controllers
 {
     // This Authorize Attribute controls the permission
-   [Authorize]
+    [Authorize]
     public class CheckOutController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -41,12 +42,28 @@ namespace QualityCaps.Controllers
                 order.Gst =
                     dbSession.Sum(
                         p =>
-                            p.UnitPrice * p.Quantity*
-                            Convert.ToDecimal(p.GstPercentage*0.01));
+                            p.UnitPrice * p.Quantity *
+                            Convert.ToDecimal(p.GstPercentage * 0.01));
+
+                // Items in order
+                List<OrderProduct> items = new List<OrderProduct>();
+                foreach (ShoppingCartItemViewModel model in dbSession)
+                {
+                    OrderProduct item = new OrderProduct()
+                    {
+                        ProductID = model.ProductID,
+                        ColorID = model.ColorID,
+                        OrderID = order.OrderID,
+                        Quantity = model.Quantity,
+
+                    };
+                    items.Add(item);
+                }
             }
-  
+
             // Session
-                ViewBag.Session = Session["ShoppingCartProducts"];
+            ViewBag.Session = Session["ShoppingCartProducts"];
+            Session[order.CustomerID]= dbSession;
             return View(order);
         }
 
@@ -55,42 +72,44 @@ namespace QualityCaps.Controllers
         // POST: Order Check Out
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-       
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Confirm()
         {
+            string message;
+            Order order = new Order();
+
+            // Get current usr(customer)
+            string usrID = User.Identity.GetUserId();
+            order.CustomerID = db.Customers.Where(c => c.AccountID.Equals(usrID)).SingleOrDefault().CustomerID;
+
             // Get cart info from session
             List<ShoppingCartItemViewModel> dbSession = new List<ShoppingCartItemViewModel>();
 
-            // Creat an order instance and set the properties
-            Order order = new Order();
-            if (Session["ShoppingCartProducts"] != null)
+            if (Session[order.CustomerID] != null)
             {
-                dbSession = (List<ShoppingCartItemViewModel>)Session["ShoppingCartProducts"];
+                dbSession = (List<ShoppingCartItemViewModel>) Session[order.CustomerID];
 
                 // Assign order id
-                order.OrderID = Guid.NewGuid().ToString();
+                order.OrderID = CultureInfo.CurrentCulture.Name.Substring(3) + DateTime.Today.ToString("yyMMdd")+new Random().Next(10000000, 99999999) +"-"+Guid.NewGuid().ToString();
 
                 // Order Date
-                order.OrderDate=DateTime.Now;
+                order.OrderDate = DateTime.Now;
 
-                // Customer Information
-                string usrID = User.Identity.GetUserId();
-                order.CustomerID = db.Customers.Where(c => c.AccountID.Equals(usrID)).SingleOrDefault().CustomerID;
+                // Total info
+                order.SubTotal = dbSession.Sum(p => p.UnitPrice*p.Quantity);
+                order.Gst =
+                    dbSession.Sum(
+                        p =>
+                            p.UnitPrice*p.Quantity*
+                            Convert.ToDecimal(p.GstPercentage*0.01));
 
                 // Status
                 order.OrderStatusID = "Status001";
 
-                // Total info
-                order.SubTotal = dbSession.Sum(p => p.UnitPrice * p.Quantity);
-                order.Gst =
-                 dbSession.Sum(
-                     p =>
-                         p.UnitPrice *
-                         Convert.ToDecimal(p.GstPercentage * 0.01));
-
                 // Items in order
                 List<OrderProduct> items = new List<OrderProduct>();
-               foreach(ShoppingCartItemViewModel model in dbSession)
+                foreach (ShoppingCartItemViewModel model in dbSession)
                 {
                     OrderProduct item = new OrderProduct()
                     {
@@ -98,26 +117,30 @@ namespace QualityCaps.Controllers
                         ColorID = model.ColorID,
                         OrderID = order.OrderID,
                         Quantity = model.Quantity,
-                        
+
                     };
                     items.Add(item);
                 }
                 order.OrderProducts = items;
 
-                if (ModelState.IsValid)
-                {
-                    // Save to database
-                    db.Orders.Add(order);
-                    db.SaveChanges();
+                // Save to database
+                db.Orders.Add(order);
+                db.SaveChanges();
 
-                    // Clear session
-                    Session.Abandon();
-                }
+                // Clear session
+                Session.Abandon();
+                message = "Your order has been placed.";
             }
-               
-                return RedirectToAction("Index");
+            else
+            {
+                message = "Error: Your order has been placed.";
+            }
 
-            
+       
+
+            return RedirectToAction("ManageOrders", "Manage", new { Message = message, area = "Account" });
+
+
         }
 
         // GET: Orders/Edit/5

@@ -1,4 +1,4 @@
-using QualityCaps.Models;
+﻿using QualityCaps.Models;
 
 namespace QualityCaps.Migrations
 {
@@ -31,7 +31,7 @@ namespace QualityCaps.Migrations
 
 
             // ORDERSTATUS
-            context.OrderStatus.AddOrUpdate(o=>o.OrderStatusID,
+            context.OrderStatus.AddOrUpdate(o => o.OrderStatusID,
                 new OrderStatus()
                 {
                     OrderStatusID = "Status001",
@@ -100,6 +100,24 @@ namespace QualityCaps.Migrations
                     PhoneHome = "02102112345",
                     PhoneMobile = "02102112345",
                     PhoneWork = "02102112345"
+                },
+                new Supplier()
+                {
+                    SupplierID = "Supplier005",
+                    Email = "CONTACT@Djinns.COM",
+                    Name = "Djinns",
+                    PhoneHome = "02102112345",
+                    PhoneMobile = "02102112345",
+                    PhoneWork = "02102112345"
+                },
+                new Supplier()
+                {
+                    SupplierID = "Supplier006",
+                    Email = "CONTACT@Seeberger.COM",
+                    Name = "Seeberger",
+                    PhoneHome = "02102112345",
+                    PhoneMobile = "02102112345",
+                    PhoneWork = "02102112345"
                 }
 
 
@@ -149,6 +167,9 @@ namespace QualityCaps.Migrations
                     ColorName = "BROWN",
                     RGBCode = "#554840"
                 }
+                , new Color() { ColorID = "F94D85", ColorName = "ROSE", RGBCode = "#F94D85" }
+, new Color() { ColorID = "04894E", ColorName = "GREEN", RGBCode = "#04894E" }
+, new Color() { ColorID = "F8512E", ColorName = "ORANGE", RGBCode = "#F8512E" }
 
 
 
@@ -261,6 +282,19 @@ namespace QualityCaps.Migrations
                     Description = @"The patented, extremely elastic Flexfit lining band makes this army cap from Kangol with its timeless cut incredibly comfortable. Two embroidered ventilation eyelets on each side of the cap keep your head at a pleasant temperature."
                 }
 
+                , new Product() { ProductID = "45374", SupplierID = "Supplier005", CategoryID = "Category003", ProductName = "HFT Buckle Linen Trucker Cap ", UnitPrice = Convert.ToDecimal(24.99), GstPercentage = 15, Description = "With the structure divided over the front and peak, the company logo and the velvety soft underside of the peak, this baseball cap from Djinns is a real highlight for your outfit. This trendy mesh cap features an airy mesh section at the back and a curved peak. The trucker cap is open at the back and press studs ensure optimum fit." }
+, new Product() { ProductID = "43122", SupplierID = "Supplier005", CategoryID = "Category003", ProductName = "5 Panel Oxford Dots Cap", UnitPrice = Convert.ToDecimal(24.99), GstPercentage = 15, Description = "The entire head section of this trendy 5 panelled cap from Djinns is decorated with a dotty pattern, whilst the peak impresses with a soft velour upper.This trendy hat’s pure cotton, a padded lining band and stitched air holes guarantee complete comfort while you stand out from the crowd." }
+, new Product() { ProductID = "45034", SupplierID = "Supplier003", CategoryID = "Category003", ProductName = "Flamingo Kids Baseball Cap", UnitPrice = Convert.ToDecimal(19.99), GstPercentage = 15, Description = "The Barts baseball cap for kid’s features cheerful and yet subtle polka dots. Its large peak extends out over the face, protecting from pesky rays of sun. The 100% cotton fabric and embroidered ventilation eyelets allow plenty of pleasantly fresh air to circulate around your head. The fashionable cap has a bow at the back, allowing the size to be adjusted." }
+, new Product() { ProductID = "46336", SupplierID = "Supplier003", CategoryID = "Category003", ProductName = "Spandex Kids Flexfit Cap", UnitPrice = Convert.ToDecimal(9.95), GstPercentage = 15, Description = "Sportiness is the trump card of this no-frills baseball cap for children. The simple design comes in lots of great colours. The large visor protects from the sun, while plenty of cotton in the material blend ensures the cap is comfortable to wear. The stretchy cap can be worn during any activity and both boys and girls like it." }
+, new Product() { ProductID = "36032", SupplierID = "Supplier003", CategoryID = "Category003", ProductName = "Kid Baseball Cap", UnitPrice = Convert.ToDecimal(9.95), GstPercentage = 15, Description = "Standing still is impossible with this baseball cap for little rascals. Made from pure cotton, it is extremely comfortable to wear." }
+, new Product() { ProductID = "45685", SupplierID = "Supplier001", CategoryID = "Category002", ProductName = "Essential Fabric Mix Cap", UnitPrice = Convert.ToDecimal(29.99), GstPercentage = 15, Description = "This baseball cap with head section made of skin-friendly cotton has a simple design but is timelessly classy. This flat brimmed cap from trendy brand New Era features a reinforced front and typical straight peak. This snapback cap is open at the back and the press studs ensure perfect fit and optimum comfort." }
+, new Product() { ProductID = "33285", SupplierID = "Supplier006", CategoryID = "Category002", ProductName = "Ansali Straw Visor Cap", UnitPrice = Convert.ToDecimal(35.95), GstPercentage = 15, Description = "Creative combination of straw visor and lightweight bandana. Knot it your way! Comfortable, elasticized back for perfect fit." }
+, new Product() { ProductID = "45648", SupplierID = "Supplier004", CategoryID = "Category002", ProductName = "Texas Wool Uni Gatsby Cap", UnitPrice = Convert.ToDecimal(69), GstPercentage = 15, Description = "An exceptional wool blend was formed into a tight knit material for this form-fitting flat cap from Stetson, making it cosy and warm to wear. Visually, the knitted hat has a plain-coloured design which allows it to adapt flexibly to elegant and casual outfits alike. A welcome sight wherever you go." }
+, new Product() { ProductID = "70886", SupplierID = "Supplier004", CategoryID = "Category002", ProductName = "Rector Baseball Cap ", UnitPrice = Convert.ToDecimal(29), GstPercentage = 15, Description = "Convertible tour, beer garden or open-air workout: This classic unreinforced baseball cap from Stetson offers great comfort and style for all outdoor occasions. It provides a UPF of 40+ to protect you against harmful effects from the sun." }
+, new Product() { ProductID = "44484", SupplierID = "Supplier003", CategoryID = "Category003", ProductName = "Mason Uni Kids Earflap Cap", UnitPrice = Convert.ToDecimal(24.99), GstPercentage = 15, Description = "This baseball cap from Barts not only protects your face from the sun’s rays but also warms your ears, thanks to its fold-down ear protection. This has a fluffy lining and can be attached to the side of the soft denim cap with a press stud." }
+
+
+
 
             );
 
@@ -370,6 +404,30 @@ namespace QualityCaps.Migrations
                     ImageUrl = "44066_f13.jpg",
                     QuantityInStock = 50
                 }
+                , new ProductColor() { ProductID = "45374", ColorID = "B7B7B7", ImageUrl = "45374_f13.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "43122", ColorID = "2A292A", ImageUrl = "43122_7f4.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "43122", ColorID = "AB0114", ImageUrl = "43122_7f3.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "45034", ColorID = "313767", ImageUrl = "45034_f2.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "45034", ColorID = "F94D85", ImageUrl = "45034_f25.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "46336", ColorID = "C8C3B0", ImageUrl = "46336_f15.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "46336", ColorID = "04894E", ImageUrl = "46336_f39.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "46336", ColorID = "F8512E", ImageUrl = "46336_f54.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "36032", ColorID = "313767", ImageUrl = "36032_f2.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "45685", ColorID = "313767", ImageUrl = "45685_f2.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "45685", ColorID = "AB0114", ImageUrl = "45685_f3.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "45685", ColorID = "B7B7B7", ImageUrl = "45685_f13.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "33285", ColorID = "AB0114", ImageUrl = "33285_f3.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "33285", ColorID = "F94D85", ImageUrl = "33285_f84.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "33285", ColorID = "F8512E", ImageUrl = "33285_f54.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "33285", ColorID = "554840", ImageUrl = "33285_f11.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "45648", ColorID = "313767", ImageUrl = "45648_f2.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "45648", ColorID = "AB0114", ImageUrl = "45648_f3.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "45648", ColorID = "2A292A", ImageUrl = "45648_f16.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "70886", ColorID = "04894E", ImageUrl = "70886_f39.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "70886", ColorID = "F8512E", ImageUrl = "70886_f54.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "70886", ColorID = "AB0114", ImageUrl = "70886_f3.jpg", QuantityInStock = 50 }
+, new ProductColor() { ProductID = "44484", ColorID = "313767", ImageUrl = "44484_f2.jpg", QuantityInStock = 50 }
+
 
                 );
         }

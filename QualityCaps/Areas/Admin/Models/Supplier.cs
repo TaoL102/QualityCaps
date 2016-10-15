@@ -19,7 +19,7 @@ namespace QualityCaps.Models
 
         [Required]
         [StringLength(50)]
-        [Display(Name = "Name")]
+        [Display(Name = "Supplier")]
         public string Name { get; set; }
 
 
